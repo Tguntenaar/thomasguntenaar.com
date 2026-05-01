@@ -1,0 +1,10 @@
+{
+  "name": "thomasguntenaar-com-site",
+  "private": true,
+  "scripts": {
+    "deploy": "rm -rf dist && mkdir -p dist && cp index.html dist/ && if [ -d assets ]; then cp -r assets dist/; fi && wrangler pages deploy dist --project-name=thomasguntenaar-com"
+  },
+  "devDependencies": {
+    "wrangler": "4.87.0"
+  }
+}

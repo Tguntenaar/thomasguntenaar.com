@@ -1,4 +1,0 @@
-# .git may already be skipped (hidden); listed for clarity on CI checkouts.
-.git/
-wrangler.jsonc
-wrangler.toml

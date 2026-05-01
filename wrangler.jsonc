@@ -1,8 +1,7 @@
 {
-  // Workers (Git Builds): deploy command `npx wrangler deploy` — static files from repo root.
+  // Cloudflare Pages (this repo is a Pages project, not a Worker).
+  // Dashboard deploy command: npm run deploy
   "name": "thomasguntenaar-com",
   "compatibility_date": "2026-05-01",
-  "assets": {
-    "directory": "."
-  }
+  "pages_build_output_dir": "dist"
 }
