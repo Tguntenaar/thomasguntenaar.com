@@ -1,7 +1,8 @@
 {
-  // Static site: connect this repo in Dashboard → Workers & Pages → Create → Pages,
-  // or: npx wrangler pages project create thomasguntenaar-com && npx wrangler pages deploy .
+  // Workers (Git Builds): deploy command `npx wrangler deploy` — static files from repo root.
   "name": "thomasguntenaar-com",
   "compatibility_date": "2026-05-01",
-  "pages_build_output_dir": "."
+  "assets": {
+    "directory": "."
+  }
 }
