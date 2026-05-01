@@ -1,6 +1,18 @@
 {
-  // Cloudflare Pages (this repo is a Pages project, not a Worker).
-  // Dashboard deploy command: npm run deploy
+  // Cloudflare PAGES — not a Worker.
+  //
+  // Dashboard → Builds: set "Deploy command" to exactly:
+  //   npm run deploy
+  //
+  // WRONG (your build log still shows this — it will always fail on Pages):
+  //   npx wrangler deploy
+  //
+  // If you split build vs deploy in the UI:
+  //   Build command:  npm run build:site
+  //   Deploy command: npm run deploy:pages
+  //
+  // One-line alternative for "Deploy command" (no npm script):
+  //   rm -rf dist && mkdir -p dist && cp index.html dist/ && if [ -d assets ]; then cp -r assets dist/; fi && npx wrangler pages deploy dist --project-name=thomasguntenaar-com
   "name": "thomasguntenaar-com",
   "compatibility_date": "2026-05-01",
   "pages_build_output_dir": "dist"

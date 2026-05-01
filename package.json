@@ -1,8 +1,11 @@
 {
   "name": "thomasguntenaar-com-site",
   "private": true,
+  "description": "Cloudflare Pages deploy MUST be npm run deploy — never npx wrangler deploy (Workers only; breaks on Pages).",
   "scripts": {
-    "deploy": "rm -rf dist && mkdir -p dist && cp index.html dist/ && if [ -d assets ]; then cp -r assets dist/; fi && wrangler pages deploy dist --project-name=thomasguntenaar-com"
+    "build:site": "rm -rf dist && mkdir -p dist && cp index.html dist/ && if [ -d assets ]; then cp -r assets dist/; fi",
+    "deploy:pages": "wrangler pages deploy dist --project-name=thomasguntenaar-com",
+    "deploy": "npm run build:site && npm run deploy:pages"
   },
   "devDependencies": {
     "wrangler": "4.87.0"
