@@ -1,805 +1,179 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>TG — Engineering, AI & Security</title>
-<link rel="icon" type="image/png" href="assets/tg-icon.png" />
-<style>
-  /* ---------- Type system ---------- */
-  @font-face {
-    font-family: "HelveticaLocal";
-    src: local("Helvetica Neue"), local("Helvetica"), local("Arial");
-    font-weight: 100 900;
-    font-style: normal;
-  }
-  :root{
-    --red: #ED1C24;
-    --red-deep: #C8121A;
-    --black: #0A0A0A;
-    --ink: #111111;
-    --paper: #F4F1EC;
-    --white: #FFFFFF;
-    --rule: rgba(0,0,0,.18);
-    --rule-on-dark: rgba(255,255,255,.18);
-    --rule-on-red: rgba(255,255,255,.22);
-    --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
-  }
-  *{ box-sizing: border-box; margin: 0; padding: 0; }
-  html, body{ background: var(--red); color: var(--white); font-family: var(--font); -webkit-font-smoothing: antialiased; }
-  body{ overflow-x: hidden; }
-  a{ color: inherit; text-decoration: none; }
-  button{ font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
-  img{ display: block; max-width: 100%; }
-
-  /* ---------- Nav ---------- */
-  .nav{
-    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 28px;
-    color: #fff;
-    transition: color .25s ease, background-color .25s ease;
-  }
-  .nav .brand{ display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; font-size: 16px; }
-  .nav .brand .mark{
-    width: 26px; height: 26px;
-    background: #fff; color: var(--red);
-    display: grid; place-items: center;
-    font-weight: 900; font-size: 13px; letter-spacing: -.04em;
-    border-radius: 2px;
-  }
-  .nav.on-light .brand .mark{ background: #000; color: #fff; }
-  .nav ul{ list-style: none; display: flex; gap: 26px; font-size: 13px; font-weight: 500; }
-  .nav .cta{
-    font-size: 13px; font-weight: 600;
-    border: 1px solid currentColor; padding: 8px 14px; border-radius: 999px;
-  }
-  .nav.on-light{ color: #000; }
-
-  /* ---------- HERO ---------- */
-  .hero{
-    position: relative;
-    min-height: 100vh;
-    background: var(--red);
-    color: #fff;
-    padding: 96px 28px 28px;
-    display: grid;
-    grid-template-rows: 1fr auto;
-  }
-  .hero .meta{
-    position: absolute; top: 18px; right: 28px;
-    font-family: var(--mono); font-size: 11px; letter-spacing: .04em; opacity: .85;
-    text-align: right;
-  }
-  .hero .meta b{ font-weight: 600; }
-  .hero .stack{
-    align-self: end;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-  .hero h1{
-    font-weight: 900;
-    font-size: clamp(72px, 16.5vw, 280px);
-    line-height: .82;
-    letter-spacing: -0.055em;
-    text-transform: none;
-  }
-  .hero h1 em{
-    font-style: normal;
-    font-weight: 100;
-    letter-spacing: -.04em;
-  }
-  .hero h1 .slash{
-    display: inline-block;
-    transform: translateY(-.05em) skewX(-12deg);
-    margin: 0 .04em;
-    font-weight: 900;
-  }
-  .hero .sub{
-    margin-top: 28px;
-    display: grid;
-    grid-template-columns: 1.6fr 1fr;
-    gap: 40px;
-    align-items: end;
-  }
-  .hero .sub .lede{
-    font-size: clamp(20px, 1.8vw, 26px);
-    line-height: 1.18;
-    font-weight: 500;
-    letter-spacing: -.012em;
-    max-width: 26ch;
-    text-wrap: balance;
-  }
-  .hero .sub .index{
-    font-family: var(--mono); font-size: 11px; line-height: 1.6; opacity: .9;
-    border-top: 1px solid var(--rule-on-red);
-    padding-top: 12px;
-    display: grid; grid-template-columns: 28px 1fr; row-gap: 6px;
-  }
-  .hero .sub .index span:nth-child(odd){ font-weight: 700; }
-  .hero .footline{
-    margin-top: 48px;
-    display: flex; justify-content: space-between; align-items: end;
-    border-top: 1px solid var(--rule-on-red);
-    padding-top: 14px;
-    font-family: var(--mono); font-size: 11px; letter-spacing: .04em;
-  }
-  .hero .footline .scroll{
-    display: flex; align-items: center; gap: 10px;
-  }
-  .hero .footline .scroll .arrow{
-    width: 18px; height: 1px; background: #fff; position: relative;
-  }
-  .hero .footline .scroll .arrow::after{
-    content:""; position: absolute; right: 0; top: -3px; width: 7px; height: 7px;
-    border-right: 1px solid #fff; border-top: 1px solid #fff; transform: rotate(45deg);
-  }
-
-  /* MASSIVE TG behind */
-  .hero .ghost{
-    position: absolute; right: -2vw; top: 8vh;
-    font-weight: 900; font-size: clamp(280px, 42vw, 720px);
-    line-height: .8; letter-spacing: -.07em;
-    color: rgba(255,255,255,.06);
-    pointer-events: none; user-select: none;
-  }
-
-  /* ---------- Marquee ---------- */
-  .marquee{
-    background: #fff; color: #000;
-    border-top: 1px solid #000; border-bottom: 1px solid #000;
-    overflow: hidden;
-    padding: 18px 0;
-    font-weight: 700; font-size: clamp(28px, 4.5vw, 64px);
-    letter-spacing: -.03em;
-    white-space: nowrap;
-  }
-  .marquee.on-black{ background: #000; color: #fff; border-color: #fff; }
-  .marquee .track{
-    display: inline-flex; gap: 48px;
-    animation: scroll 38s linear infinite;
-    will-change: transform;
-  }
-  .marquee .track > span{ display: inline-flex; align-items: center; gap: 48px; }
-  .marquee .dot{
-    display: inline-block; width: 14px; height: 14px; border-radius: 999px; background: var(--red);
-    transform: translateY(-4px);
-  }
-  @keyframes scroll{
-    from{ transform: translateX(0); }
-    to{ transform: translateX(-50%); }
-  }
-
-  /* ---------- Manifesto sticky (BLACK) ---------- */
-  .manifesto{
-    background: #000;
-    color: #fff;
-    position: relative;
-  }
-  .manifesto-inner{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .manifesto .pin{
-    position: sticky; top: 0;
-    height: 100vh;
-    display: flex; flex-direction: column; justify-content: space-between;
-    padding: 96px 40px 40px;
-    border-right: 1px solid var(--rule-on-dark);
-  }
-  .manifesto .pin .label{
-    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    opacity: .7;
-  }
-  .manifesto .pin h2{
-    font-weight: 900; font-size: clamp(56px, 7.6vw, 132px);
-    line-height: .86; letter-spacing: -.045em;
-  }
-  .manifesto .pin h2 .red{ color: var(--red); }
-  .manifesto .pin .sig{
-    font-family: var(--mono); font-size: 11px; opacity: .7;
-    display: flex; justify-content: space-between;
-  }
-  .manifesto .scroll-col{
-    padding: 96px 40px 96px;
-    display: flex; flex-direction: column; gap: 22vh;
-  }
-  .manifesto .stmt{
-    display: grid; gap: 18px;
-  }
-  .manifesto .stmt .num{
-    font-family: var(--mono); font-size: 11px; opacity: .55; letter-spacing: .1em;
-  }
-  .manifesto .stmt p{
-    font-weight: 500;
-    font-size: clamp(28px, 2.6vw, 40px);
-    line-height: 1.12; letter-spacing: -.02em;
-    text-wrap: pretty;
-  }
-  .manifesto .stmt p b{ font-weight: 900; color: var(--red); }
-  .manifesto .stmt p u{ text-decoration: none; border-bottom: 2px solid #fff; padding-bottom: 2px; }
-
-  /* ---------- Capabilities (PAPER) ---------- */
-  .capabilities{
-    background: var(--paper); color: #000;
-    padding: 96px 0 0;
-    position: relative;
-  }
-  .cap-head{
-    display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-    padding: 0 28px 36px;
-    border-bottom: 1px solid #000;
-  }
-  .cap-head .label{
-    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-  }
-  .cap-head h3{
-    font-weight: 900; font-size: clamp(48px, 6vw, 104px); line-height: .9; letter-spacing: -.045em;
-    grid-column: 1 / -1;
-    text-wrap: balance;
-  }
-  .cap-head h3 em{ font-style: normal; color: var(--red); }
-  .cap-head .meta-r{ font-family: var(--mono); font-size: 11px; opacity: .7; text-align: right; align-self: end; }
-
-  .cap-list{ list-style: none; }
-  .cap-row{
-    display: grid;
-    grid-template-columns: 80px 1fr 1.4fr 120px;
-    align-items: center;
-    gap: 24px;
-    padding: 28px;
-    border-bottom: 1px solid #000;
-    cursor: pointer;
-    transition: background .25s ease, color .25s ease;
-    position: relative;
-  }
-  .cap-row:hover{ background: #000; color: #fff; }
-  .cap-row:hover .cap-arrow{ transform: translateX(8px); }
-  .cap-row:hover .cap-num{ color: var(--red); }
-  .cap-num{
-    font-family: var(--mono); font-size: 13px; letter-spacing: .04em; transition: color .2s;
-  }
-  .cap-title{
-    font-weight: 900; font-size: clamp(28px, 3.4vw, 56px); letter-spacing: -.035em; line-height: .95;
-  }
-  .cap-desc{
-    font-size: 15px; line-height: 1.45; max-width: 56ch;
-  }
-  .cap-arrow{
-    justify-self: end;
-    font-size: 24px; transition: transform .25s ease;
-  }
-  .cap-row .reveal{
-    position: absolute; right: 28px; bottom: 28px;
-    font-family: var(--mono); font-size: 11px; opacity: 0; transform: translateY(8px);
-    transition: opacity .2s, transform .2s;
-  }
-
-  /* ---------- VS Comparison (BLACK split RED) ---------- */
-  .compare{
-    position: relative;
-    color: #fff;
-    background: linear-gradient(90deg, #000 0%, #000 50%, var(--red) 50%, var(--red) 100%);
-  }
-  .compare-head{
-    display: grid; grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid rgba(255,255,255,.25);
-  }
-  .compare-head > div{
-    padding: 56px 40px 28px;
-  }
-  .compare-head > div:first-child{ border-right: 1px solid rgba(255,255,255,.25); }
-  .compare-head .who{
-    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .8;
-  }
-  .compare-head h4{
-    margin-top: 12px;
-    font-weight: 900; font-size: clamp(40px, 5.6vw, 96px); line-height: .9; letter-spacing: -.04em;
-  }
-  .compare-grid{
-    display: grid; grid-template-columns: 1fr 1fr;
-  }
-  .compare-grid > ul{
-    list-style: none; padding: 12px 0;
-  }
-  .compare-grid > ul:first-child{ border-right: 1px solid rgba(255,255,255,.25); }
-  .compare-grid li{
-    display: grid; grid-template-columns: 56px 1fr;
-    align-items: start; gap: 0;
-    padding: 24px 40px;
-    border-top: 1px solid rgba(255,255,255,.18);
-    font-size: clamp(18px, 1.6vw, 22px);
-    line-height: 1.25; letter-spacing: -.005em;
-    font-weight: 500;
-  }
-  .compare-grid li:first-child{ border-top: none; }
-  .compare-grid .glyph{
-    font-family: var(--mono); font-weight: 700; font-size: 20px;
-  }
-  .compare-grid .col-tg .glyph{ color: var(--red); }
-  .compare-grid .col-them{
-    opacity: .9;
-  }
-  .compare-grid .col-them .glyph{ opacity: .55; }
-  .compare-grid .col-them li{ text-decoration: line-through; text-decoration-color: rgba(255,255,255,.45); text-decoration-thickness: 1px; }
-
-  /* ---------- Numbers strip ---------- */
-  .strip{
-    background: #000; color: #fff;
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid rgba(255,255,255,.2);
-  }
-  .strip .stat{
-    padding: 56px 32px;
-    border-right: 1px solid rgba(255,255,255,.2);
-  }
-  .strip .stat:last-child{ border-right: none; }
-  .strip .num{
-    font-weight: 900; font-size: clamp(56px, 6vw, 96px); letter-spacing: -.05em; line-height: .9;
-  }
-  .strip .num em{ color: var(--red); font-style: normal; }
-  .strip .lab{
-    margin-top: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .7;
-  }
-
-  /* ---------- Process sticky ---------- */
-  .process{
-    background: var(--red); color: #fff; position: relative;
-  }
-  .process-head{
-    padding: 96px 28px 36px; border-bottom: 1px solid var(--rule-on-red);
-    display: grid; grid-template-columns: 1fr auto;
-  }
-  .process-head .label{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
-  .process-head h3{
-    grid-column: 1 / -1; margin-top: 8px;
-    font-weight: 900; font-size: clamp(48px, 6vw, 104px); line-height: .9; letter-spacing: -.045em;
-    text-wrap: balance;
-  }
-  .process-grid{
-    display: grid; grid-template-columns: repeat(4, 1fr);
-  }
-  .process-grid .step{
-    padding: 48px 28px 56px;
-    border-right: 1px solid var(--rule-on-red);
-    min-height: 360px;
-    display: flex; flex-direction: column; justify-content: space-between;
-  }
-  .process-grid .step:last-child{ border-right: none; }
-  .process-grid .step .n{
-    font-family: var(--mono); font-size: 11px; opacity: .85; letter-spacing: .12em;
-  }
-  .process-grid .step h5{
-    margin-top: auto;
-    font-weight: 900; font-size: clamp(28px, 2.4vw, 36px); letter-spacing: -.03em; line-height: 1;
-  }
-  .process-grid .step p{
-    margin-top: 14px;
-    font-size: 14px; line-height: 1.45; opacity: .92; max-width: 36ch;
-  }
-
-  /* ---------- CTA / Contact ---------- */
-  .cta{
-    background: #000; color: #fff;
-    padding: 12vh 28px;
-    border-top: 1px solid rgba(255,255,255,.2);
-  }
-  .cta-inner{
-    max-width: 1600px; margin: 0 auto;
-    display: grid; gap: 56px;
-  }
-  .cta h2{
-    font-weight: 900; font-size: clamp(72px, 12vw, 220px); line-height: .82; letter-spacing: -.055em;
-    text-wrap: balance;
-  }
-  .cta h2 em{ font-style: normal; color: var(--red); }
-  .cta h2 .arrow{
-    display: inline-block;
-    transform: translateY(-.06em);
-  }
-  .cta-row{
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    border-top: 1px solid rgba(255,255,255,.25);
-    padding-top: 32px;
-  }
-  .cta-row .item .lab{ font-family: var(--mono); font-size: 11px; opacity: .7; letter-spacing: .12em; text-transform: uppercase; }
-  .cta-row .item .val{ margin-top: 10px; font-size: clamp(20px, 1.8vw, 28px); font-weight: 700; letter-spacing: -.015em; }
-  .cta-row .item .val:hover{ color: var(--red); }
-
-  /* ---------- Footer ---------- */
-  footer{
-    background: #000; color: #fff;
-    padding: 32px 28px 32px;
-    border-top: 1px solid rgba(255,255,255,.2);
-    display: grid; grid-template-columns: 1fr auto 1fr;
-    align-items: center; gap: 24px;
-    font-family: var(--mono); font-size: 11px; letter-spacing: .04em;
-  }
-  footer .center{ display: flex; align-items: center; gap: 12px; }
-  footer .mark{
-    width: 22px; height: 22px; background: #fff; color: #000;
-    display: grid; place-items: center; font-weight: 900; font-size: 11px; letter-spacing: -.04em;
-  }
-  footer .right{ text-align: right; opacity: .7; }
-  footer .left{ opacity: .7; }
-
-  /* ---------- Mobile-ish ---------- */
-  @media (max-width: 900px){
-    .nav ul{ display: none; }
-    .hero .sub{ grid-template-columns: 1fr; }
-    .manifesto-inner{ grid-template-columns: 1fr; }
-    .manifesto .pin{ position: relative; height: auto; padding: 80px 24px 40px; border-right: 0; border-bottom: 1px solid var(--rule-on-dark); }
-    .manifesto .scroll-col{ padding: 60px 24px; gap: 60px; }
-    .cap-row{ grid-template-columns: 50px 1fr 30px; }
-    .cap-desc{ display: none; }
-    .compare{ background: #000; }
-    .compare-head, .compare-grid{ grid-template-columns: 1fr; }
-    .compare-head > div:first-child, .compare-grid > ul:first-child{ border-right: 0; border-bottom: 1px solid rgba(255,255,255,.25); }
-    .compare-grid > ul:last-child{ background: var(--red); }
-    .strip{ grid-template-columns: 1fr 1fr; }
-    .process-grid{ grid-template-columns: 1fr 1fr; }
-    .cta-row{ grid-template-columns: 1fr; }
-    footer{ grid-template-columns: 1fr; text-align: center; }
-    footer .right{ text-align: center; }
-  }
-</style>
+  <meta charset="utf-8">
+  <title>TG — Engineering, AI &amp; Security</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #ED1C24; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
+    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #ED1C24; z-index: 9999; }
+    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
+    #__bundler_placeholder { color: #999; font-size: 14px; }
+  </style>
+  <noscript>
+    <style>#__bundler_loading { display: none; }</style>
+    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
+      This page requires JavaScript to display.
+    </div>
+  </noscript>
 </head>
 <body>
-
-<!-- ============ NAV ============ -->
-<nav class="nav">
-  <a class="brand" href="#top">
-    <span class="mark">TG</span>
-    <span>Agency</span>
-  </a>
-  <ul>
-    <li><a href="#capabilities">Capabilities</a></li>
-    <li><a href="#difference">Difference</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a class="cta" href="#contact">Book a call →</a>
-</nav>
-
-<!-- ============ HERO ============ -->
-<section class="hero" id="top">
-  <div class="meta">
-    <div><b>TG / 001</b></div>
-    <div>Engineering · AI · Security</div>
-    <div>Est. 2019 — Remote</div>
-  </div>
-
-  <div class="ghost" aria-hidden="true">TG</div>
-
-  <div class="stack">
-    <h1>
-      Ship<span class="slash">/</span>fast.<br/>
-      Ship<span class="slash">/</span><em>secure.</em>
-    </h1>
-
-    <div class="sub">
-      <p class="lede">
-        I'm a 10× engineer building custom AI agents, automation
-        and security infrastructure for teams that refuse to wait
-        on a bloated agency.
-      </p>
-      <div class="index">
-        <span>01</span><span>AI Agents &amp; Automation</span>
-        <span>02</span><span>Security Advisory</span>
-        <span>03</span><span>ML / Insight Systems</span>
-        <span>04</span><span>Continuous Engineering</span>
-      </div>
-    </div>
-
-    <div class="footline">
-      <div>© TG / All rights / 2026</div>
-      <div class="scroll">Scroll <span class="arrow"></span></div>
-      <div>N 40.7128 · W 74.0060</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ MARQUEE ============ -->
-<div class="marquee on-black" aria-hidden="true">
-  <div class="track">
-    <span>
-      AI AGENTS <span class="dot"></span>
-      AUTOMATION <span class="dot"></span>
-      SECURITY ADVISORY <span class="dot"></span>
-      ML INSIGHTS <span class="dot"></span>
-      INFRA <span class="dot"></span>
-      0-DAY HARDENING <span class="dot"></span>
-      CONTINUOUS DELIVERY <span class="dot"></span>
-    </span>
-    <span>
-      AI AGENTS <span class="dot"></span>
-      AUTOMATION <span class="dot"></span>
-      SECURITY ADVISORY <span class="dot"></span>
-      ML INSIGHTS <span class="dot"></span>
-      INFRA <span class="dot"></span>
-      0-DAY HARDENING <span class="dot"></span>
-      CONTINUOUS DELIVERY <span class="dot"></span>
-    </span>
-  </div>
+  <div id="__bundler_thumbnail">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#ED1C24"></rect>
+    <text x="600" y="540" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="520" letter-spacing="-30" fill="#ffffff">TG</text>
+  </svg>
 </div>
+  <div id="__bundler_loading">Unpacking...</div>
 
-<!-- ============ MANIFESTO (sticky) ============ -->
-<section class="manifesto">
-  <div class="manifesto-inner">
-    <aside class="pin">
-      <div class="label">/ 02 — Manifesto</div>
-      <h2>
-        One operator.<br/>
-        Zero <span class="red">bloat.</span>
-      </h2>
-      <div class="sig">
-        <span>TG / Manifesto v3</span>
-        <span>2026 ⟶</span>
-      </div>
-    </aside>
+  <script>
+    
+document.addEventListener('DOMContentLoaded', async function() {
+  const loading = document.getElementById('__bundler_loading');
+  function setStatus(msg) { if (loading) loading.textContent = msg; }
 
-    <div class="scroll-col">
-      <div class="stmt">
-        <div class="num">— 01</div>
-        <p>Most agencies sell <u>headcount</u>. I sell <b>leverage</b>. One senior engineer with AI compounding underneath, shipping the work of a team.</p>
-      </div>
-      <div class="stmt">
-        <div class="num">— 02</div>
-        <p>I write the agents, the pipelines and the post-mortems. Strategy, build and optimization in <b>one continuous loop</b>.</p>
-      </div>
-      <div class="stmt">
-        <div class="num">— 03</div>
-        <p>Security is not a phase, it's a <b>posture</b>. Every system I build is hardened the day it ships, not three audits later.</p>
-      </div>
-      <div class="stmt">
-        <div class="num">— 04</div>
-        <p>I work alongside your team like an extension — not a vendor handoff, not a quarterly invoice, not a Slack ghost.</p>
-      </div>
-      <div class="stmt">
-        <div class="num">— 05</div>
-        <p>If it can be automated, it should be. If it can be exploited, it will be. I plan for <b>both</b>.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  // Error sink persists across replaceWith since it's on window, not the DOM.
+  window.addEventListener('error', function(e) {
+    var p = document.body || document.documentElement;
+    var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
+    d.id = '__bundler_err';
+    d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
+    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
+      '[bundle] ' + (e.message || e.type) +
+      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
+  }, true);
 
-<!-- ============ MARQUEE 2 ============ -->
-<div class="marquee" aria-hidden="true">
-  <div class="track">
-    <span>
-      CAPABILITIES <span class="dot"></span>
-      WHAT I ACTUALLY DO <span class="dot"></span>
-      NO RETAINERS FOR DECKS <span class="dot"></span>
-      ENGINEERING FIRST <span class="dot"></span>
-    </span>
-    <span>
-      CAPABILITIES <span class="dot"></span>
-      WHAT I ACTUALLY DO <span class="dot"></span>
-      NO RETAINERS FOR DECKS <span class="dot"></span>
-      ENGINEERING FIRST <span class="dot"></span>
-    </span>
-  </div>
-</div>
+  try {
+    const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
+    const templateEl = document.querySelector('script[type="__bundler/template"]');
+    if (!manifestEl || !templateEl) {
+      setStatus('Error: missing bundle data');
+      console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
+      return;
+    }
 
-<!-- ============ CAPABILITIES ============ -->
-<section class="capabilities" id="capabilities">
-  <div class="cap-head">
-    <div class="label">/ 03 — Capabilities</div>
-    <div class="meta-r">06 services · 1 operator</div>
-    <h3>Tailored systems. <em>Built once,</em> evolved forever.</h3>
-  </div>
+    const manifest = JSON.parse(manifestEl.textContent);
+    let template = JSON.parse(templateEl.textContent);
 
-  <ul class="cap-list">
-    <li class="cap-row">
-      <span class="cap-num">01 / AI</span>
-      <span class="cap-title">Custom AI Agents</span>
-      <span class="cap-desc">Agents wired into your stack — CRM, ticketing, code, comms. Built around your workflow, not a SaaS template. Includes prompt eng, tool routing, eval harnesses.</span>
-      <span class="cap-arrow">→</span>
-    </li>
-    <li class="cap-row">
-      <span class="cap-num">02 / OPS</span>
-      <span class="cap-title">Automation &amp; Pipelines</span>
-      <span class="cap-desc">From data ingestion to shipped product. Replace the work that's burning hours on your team — quietly, repeatably, with logs you can actually read.</span>
-      <span class="cap-arrow">→</span>
-    </li>
-    <li class="cap-row">
-      <span class="cap-num">03 / SEC</span>
-      <span class="cap-title">Security Advisory</span>
-      <span class="cap-desc">Threat modeling, red-team thinking, secrets &amp; auth review. The voice in the room asking how this gets owned, before someone outside the room owns it.</span>
-      <span class="cap-arrow">→</span>
-    </li>
-    <li class="cap-row">
-      <span class="cap-num">04 / ML</span>
-      <span class="cap-title">ML &amp; Insight Systems</span>
-      <span class="cap-desc">Models that earn their seat. Forecasting, classification, retrieval — production-grade, monitored, explainable to non-technical stakeholders.</span>
-      <span class="cap-arrow">→</span>
-    </li>
-    <li class="cap-row">
-      <span class="cap-num">05 / SCALE</span>
-      <span class="cap-title">Infra That Grows</span>
-      <span class="cap-desc">Architecture chosen for the next 10× — not the cheapest demo. Cost-aware, observable, boring on purpose where it matters.</span>
-      <span class="cap-arrow">→</span>
-    </li>
-    <li class="cap-row">
-      <span class="cap-num">06 / CO</span>
-      <span class="cap-title">Embedded Engineering</span>
-      <span class="cap-desc">I plug into your team like a senior hire. Standups, code review, on-call when needed. Not a deck-and-disappear operation.</span>
-      <span class="cap-arrow">→</span>
-    </li>
-  </ul>
-</section>
+    const uuids = Object.keys(manifest);
+    setStatus('Unpacking ' + uuids.length + ' assets...');
 
-<!-- ============ STATS STRIP ============ -->
-<section class="strip">
-  <div class="stat"><div class="num"><em>10×</em></div><div class="lab">/ Output multiplier</div></div>
-  <div class="stat"><div class="num">24/7</div><div class="lab">/ Eyes on the system</div></div>
-  <div class="stat"><div class="num">0</div><div class="lab">/ Account managers</div></div>
-  <div class="stat"><div class="num">∞</div><div class="lab">/ Iteration loops</div></div>
-</section>
+    const blobUrls = {};
+    await Promise.all(uuids.map(async (uuid) => {
+      const entry = manifest[uuid];
+      try {
+        const binaryStr = atob(entry.data);
+        const bytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
 
-<!-- ============ COMPARE ============ -->
-<section class="compare" id="difference">
-  <div class="compare-head">
-    <div>
-      <div class="who">/ Other agencies</div>
-      <h4>What you<br/>used to get.</h4>
-    </div>
-    <div>
-      <div class="who">/ TG</div>
-      <h4>What you<br/>get with me.</h4>
-    </div>
-  </div>
-
-  <div class="compare-grid">
-    <ul class="col-them">
-      <li><span class="glyph">×</span><span>Limited or no real AI expertise — wrappers around someone else's API.</span></li>
-      <li><span class="glyph">×</span><span>Only basic marketing or generic dev services on a template stack.</span></li>
-      <li><span class="glyph">×</span><span>Manual analysis, slow loops, decks instead of decisions.</span></li>
-      <li><span class="glyph">×</span><span>Hard to scale without doubling the bill.</span></li>
-      <li><span class="glyph">×</span><span>One-off projects with little follow-up after launch.</span></li>
-      <li><span class="glyph">×</span><span>Generic playbooks, no nuance for your domain.</span></li>
-      <li><span class="glyph">×</span><span>Transactional, project-based — strangers by month three.</span></li>
-    </ul>
-    <ul class="col-tg">
-      <li><span class="glyph">+</span><span>Tailored, custom AI agents and automation — built around your workflow.</span></li>
-      <li><span class="glyph">+</span><span>Strategy, build and optimization, all in one operator.</span></li>
-      <li><span class="glyph">+</span><span>Machine-learning insights wired into the decision, not the deck.</span></li>
-      <li><span class="glyph">+</span><span>Solutions designed to grow with your business, not against it.</span></li>
-      <li><span class="glyph">+</span><span>Continuous improvements, support and on-call when it counts.</span></li>
-      <li><span class="glyph">+</span><span>Global tech expertise — hacker, advisor, builder in one seat.</span></li>
-      <li><span class="glyph">+</span><span>Works alongside your team like an extension, not a vendor.</span></li>
-    </ul>
-  </div>
-</section>
-
-<!-- ============ MARQUEE 3 ============ -->
-<div class="marquee on-black" aria-hidden="true">
-  <div class="track">
-    <span>
-      ENGAGEMENT <span class="dot"></span>
-      4 PHASE LOOP <span class="dot"></span>
-      DISCOVER · DESIGN · DEPLOY · DEFEND <span class="dot"></span>
-    </span>
-    <span>
-      ENGAGEMENT <span class="dot"></span>
-      4 PHASE LOOP <span class="dot"></span>
-      DISCOVER · DESIGN · DEPLOY · DEFEND <span class="dot"></span>
-    </span>
-  </div>
-</div>
-
-<!-- ============ PROCESS ============ -->
-<section class="process" id="process">
-  <div class="process-head">
-    <div class="label">/ 04 — Engagement</div>
-    <h3>Four phases. <em style="font-style:normal; opacity:.7;">No retainers&nbsp;for&nbsp;decks.</em></h3>
-  </div>
-  <div class="process-grid">
-    <div class="step">
-      <div class="n">— Phase 01</div>
-      <div>
-        <h5>Discover</h5>
-        <p>One week. I map the workflow, the data, the threat surface and what's actually slowing your team down. You leave with a written plan, not a pitch.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="n">— Phase 02</div>
-      <div>
-        <h5>Design</h5>
-        <p>Architecture, models, agents, auth boundaries. Drawn end-to-end before a line of production code ships. Reviewed with your engineers, not over their heads.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="n">— Phase 03</div>
-      <div>
-        <h5>Deploy</h5>
-        <p>Built, tested, instrumented, hardened. Shipped behind feature flags with a rollback plan. The day it goes live is a non-event.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="n">— Phase 04</div>
-      <div>
-        <h5>Defend</h5>
-        <p>Continuous improvements, monitoring and security follow-through. I stay on the system that I built — incentives aligned forever.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CTA ============ -->
-<section class="cta" id="contact">
-  <div class="cta-inner">
-    <h2>
-      Got a system<br/>
-      that needs<br/>
-      <em>shipping?</em> <span class="arrow">↗</span>
-    </h2>
-    <div class="cta-row">
-      <div class="item">
-        <div class="lab">/ Email</div>
-        <a class="val" href="mailto:hello@thomasguntenaar.com">hello@thomasguntenaar.com</a>
-      </div>
-      <div class="item">
-        <div class="lab">/ Booking</div>
-        <a class="val" href="#">cal.com/thomas-space</a>
-      </div>
-      <div class="item">
-        <div class="lab">/ Signal</div>
-        <a class="val" href="#">thomasin_space.01</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="left">© TG Agency — All rights, 2026</div>
-  <div class="center">
-    <span class="mark">TG</span>
-    <span>Engineering · AI · Security</span>
-  </div>
-  <div class="right">Built solo. Hardened on purpose.</div>
-</footer>
-
-<script>
-  // Hover interaction: cap rows reveal subtitles on enter
-  document.querySelectorAll('.cap-row').forEach((row) => {
-    row.addEventListener('mouseenter', () => row.classList.add('on'));
-    row.addEventListener('mouseleave', () => row.classList.remove('on'));
-  });
-
-  // Nav color switch based on section behind it
-  const nav = document.querySelector('.nav');
-  const lightSections = document.querySelectorAll('.capabilities');
-  function updateNav(){
-    const navY = 30;
-    let onLight = false;
-    lightSections.forEach(s => {
-      const r = s.getBoundingClientRect();
-      if (r.top <= navY && r.bottom >= navY) onLight = true;
-    });
-    nav.classList.toggle('on-light', onLight);
-  }
-  updateNav();
-  window.addEventListener('scroll', updateNav, { passive: true });
-  window.addEventListener('resize', updateNav);
-
-  // Smooth scroll for nav anchors
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      const id = a.getAttribute('href');
-      if (id.length > 1) {
-        const el = document.querySelector(id);
-        if (el) {
-          e.preventDefault();
-          window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' });
+        let finalBytes = bytes;
+        if (entry.compressed) {
+          if (typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('gzip');
+            const writer = ds.writable.getWriter();
+            const reader = ds.readable.getReader();
+            writer.write(bytes);
+            writer.close();
+            const chunks = [];
+            let totalLen = 0;
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+              totalLen += value.length;
+            }
+            finalBytes = new Uint8Array(totalLen);
+            let offset = 0;
+            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
+          } else {
+            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
+          }
         }
+
+        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+      } catch (err) {
+        console.error('Failed to decode asset ' + uuid + ':', err);
+        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
       }
-    });
-  });
-</script>
+    }));
+
+    const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
+    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
+    const resourceMap = {};
+    for (const entry of extResources) {
+      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
+    }
+
+    setStatus('Rendering...');
+    for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
+
+    // Strip integrity + crossorigin — blob URLs from a file:// document inherit
+    // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
+    // The manifest bytes are ours; SRI protects against CDN compromise, not this.
+    template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+    const resourceScript = '<script>window.__resources = ' +
+      JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
+      ';</' + 'script>';
+    // Inject after <head> so the DOCTYPE stays first; prepending the script
+    // would push the parser into quirks mode. DOMParser always emits a <head>
+    // (synthesizing one if the source HTML omitted it) but may carry
+    // attributes through, so match the full opening tag. slice() rather than
+    // replace() keeps us clear of $-pattern substitution in resourceScript.
+    const headOpen = template.match(/<head[^>]*>/i);
+    if (headOpen) {
+      const i = headOpen.index + headOpen[0].length;
+      template = template.slice(0, i) + resourceScript + template.slice(i);
+    }
+
+    // Parse the template and swap the root element. Scripts inserted via
+    // DOMParser/replaceWith are inert per spec — re-create each with
+    // createElement so they execute, awaiting onload for src scripts to
+    // preserve ordering (React before ReactDOM before Babel before text/babel).
+    const doc = new DOMParser().parseFromString(template, 'text/html');
+    document.documentElement.replaceWith(doc.documentElement);
+    const dead = Array.from(document.scripts);
+    for (const old of dead) {
+      const s = document.createElement('script');
+      for (const a of old.attributes) s.setAttribute(a.name, a.value);
+      s.textContent = old.textContent;
+      // text/babel scripts with a src: fetch and inline. transformScriptTags
+      // does XHR against the src, but blob:null/ from a file:// origin is
+      // silently dropped. Inlining makes it a plain inline babel script,
+      // which transformScriptTags handles unconditionally.
+      if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
+        const r = await fetch(s.src);
+        s.textContent = await r.text();
+        s.removeAttribute('src');
+      }
+      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;
+      old.replaceWith(s);
+      if (p) await p;
+    }
+    // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
+    // which fired before we swapped the document. Trigger manually if present.
+    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
+      window.Babel.transformScriptTags();
+    }
+  } catch (err) {
+    setStatus('Error unpacking: ' + err.message);
+    console.error('Bundle unpack error:', err);
+  }
+});
+
+  </script>
+
+  <script type="__bundler/manifest">
+{"950cddea-6f73-445b-b139-a197347ba9bc":{"mime":"image/svg+xml","compressed":true,"data":"H4sIAAAAAAAAE21Yza4mRw3d8xTWZY2n/G+jTBa0xI4XYIdEyEQKSURGGR4fHdd3I0FY3T7Vvi63yz4+9X318y/f0pfv/v7508e3iH6jT9989+2nzx/fvOKNfvnumy9/+vHfH98OHYpo2tV/fPf99x/ffvjxh2/e6N///P6Hnz++ffr8+ac/fvjw5csX/mL847++/aDnnA8///Lt29e/++qnv33+RH//+PaXQ4e9T3o83nyqkg7bqJ2kSZYIwYJ0CIk7qxkd1kprf8SHR2UXxFpJIjjPYCFTj5OksE7vwhmZR1J5BptojHnQ/1lwLl0fUWXzSBsfcSz4sRrSA6drcbozSWU4OuiwlB7zR63Z9lPEPI6SRrFkYUHU2kkreAKByXEdebSLw7DLmW4d0hkWfNtpSSsjk8PZcHq8pyYek+b0XdHKGiXT5Dx3RbzJzDny4kybfsyGxWNXRqqKzI1LbVciwofMm+3s3sdaze3xY2ym9AdkwY83eSRLkgiHylCcQ557lk+cwz1FXiwdTXGEaxy458BWuWTIm1PKnxDltUsuE6NQ5RahDLZ0pzChipdvEx4RquSoSQpTbjWq4qwGNi5zquaqiieseYo6WHyEwo0naYTTvCi8OVJp+uXdmyebZvhUN4UPI/cznFWyuIbkHNaxJ0LZMkiOoxYowlnTSE6z6FAEEqTsLU9EsGYvbgQezmF4b2wiFGFcLYvL+gkPHh0SadZThA8RcRJVLgNGXyiJ1o1FnFOTxJI9lH6DT3F2k/i58ZzkyVo8RwhYPUlc2BQ4OI4trrA91Dq3C8OafILbncSL9Qz5HB7kwoc76vEubrRgCEc3eTtnAhtbOHmjcmp7VnQe78MOfxFcLuQ1jPREXvNqVN7i6Xi8EtVJEs0aRl7GhdTHcCjs4R7tfLimHq/DHpcR/Ch5Di9lpPI5SZ7NWrU4EU4Wm5CksVSRZ7Jh+0SzwDwYBQS2QPs6tk7UqNB/P8v78+N57henb2jAJ67PKHJEnrkRROfjKBhtknB0JnkcDsGBJKfQ5srmenblgSfwjhj9Fgt3F4kVi8rjKjyIRMBCRTawR90WqygZIkzUebL0Y1HsyOVBzossDityd4KnL4OI1cU5jzk+VC4OJbPiOXmxOZkFo7IBJR7TYalr3iVkanzium8H8SWPvbDMY2d4YuFy3tHt2cXepIOo7m517NEWzrjRpQgpTva1fdiQ7offI9IwPjgybW5rvGMxnIGyTC5WVGUFR/jaK5q2k33fIs6p7aSF+Huaz9gaWw6pFEfovvdjpFp85EIfUjRs9pp7GakLe73MR0hBs5UvjBiF/ZrHQRDJ1xhtoHl4ZC4O4OC0l3XaTUbezSOLNIdP+wsHaR3uU9fea5NbJ9avk0ktt6BxDGEjhYVBtmd+BoOu+eTCOr0wT5ChMv3ZszIjQ1ePk2nwOSjA4kCdkWWvW+tm1STL4ZIkV2XXIYthLyEHzdiQmfEougd0g9o73Ibu8j1B0+KyWGySW2xxfO3Nimxnz9z30YvF/OIaMhV27bV3DzIZ1pd/pB8pOZ4XY39x7njFg0SA7jde58Sslduai+dOeT+29k12kit13w7ycgwNTB6xAmGbH5FovTA8Gff7+7HFmu94Hrdhe9mnF7kGW/dizDwXYb/mo/74cS65sIdsCj1OdkBeoA5h1YtB49aQT3HxNBl4W3UxRqOV7OwHNrUH54mOWuxFlolxczFUDwgWpHCQF3ns8vnFTqAm02uOJjF8vF/3cfSxgDy4UFBRUCIXai+R1f3ncH0M073lha8OanvhSDIImFdskfYAH3t5R4yerPKybzJf/fKC/ZgjlnjFagSaRCNvKrd0+9dDBaUqCKcH8gWRKdqvDw8+IGI5TEt4Uh7DFHxxW7aTpfAptKmxTZCl8SyfDcvJB1lt8dWlUGa/xXHbNSAe4rGCxh5SH06ycq5qUlcuspq7twUXbBs6OEnNWSPIWlhAMaZcmWStLOmkBhmtj7XtOFSdFVFbQaBNLeh/ssYUIVXfwW89fMRWdFfGFmC6kEowMogCXVoUgy55HOIT5sqFKYupkHqxG7mcnf+6skweVH+CRhcH+bqRF4a9c81cDB0iK9MvFHI1drnuJo0cdKO50ZyUx00ZtCwGPUput9oXIzoXVtAwcNnjEFPn2qugt3tZChhyHLKkMRsEs0JXFcVc+1Qo7GSTWFxQOZN87CanKp+QxN1h8ahSWL6S6yzZK2DxfAUslJjsfMIYA074XgVWi3GfQI2K19o3Rs6cFSHAE/Mqf9gXC7oH9xrXBxiqAowaK6aLrcDAuEzpYkd3Gcbrmjua04XH7ls006qj6z06t+MNyh6ZAwO0cTq8/y8+qx8hhaJtbwLoOJvg40qQ41ttxYLt/FXMg6LFxQGSKMnP2esk1LoRbk2Sm1UIOIgM6b3CeMyWHsRFaOJGu6VluEqB4OWOvVBwA94Na0LV42ai5Fh3oxDcmntxez848JW/vtqK3JsrV4eie8jPcBDEsGEoHUzjWozp7qe4oBcLvNjkGD9z8Vg8S/YH2tw3KVaQVLp4cz1csajGlpT8+AvTbyDI8/qqZUfImdd/u+zgVoyjwgDYwbqiftlR8o7Butd7k2D1iwVDHZm0+52j/ejocsVV8dAruEPJSm67So3Qai8JSA4aNLnrCTn5eq7bCmiJ0ndIUolZ9CuEHHhZ4hkzqOSuqx0ev8/vonPk3infbwyYHe/o/Gp1CFIMv4tAFLH0Pr3/evLX9x9hfn/q/On8+e3rrz7gR5avf/cVfnP5+j9oLNBw1hEAAA=="}}
+  </script>
+
+  <script type="__bundler/ext_resources">
+[]
+  </script>
+
+  <script type="__bundler/template">
+"<!DOCTYPE html>\n<html lang=\"en\"><head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>TG — Engineering, AI &amp; Security<\u002Ftitle>\n<link rel=\"icon\" type=\"image/svg+xml\" href=\"950cddea-6f73-445b-b139-a197347ba9bc\">\n\n<style>\n  /* ---------- Type system ---------- */\n  @font-face {\n    font-family: \"HelveticaLocal\";\n    src: local(\"Helvetica Neue\"), local(\"Helvetica\"), local(\"Arial\");\n    font-weight: 100 900;\n    font-style: normal;\n  }\n  :root{\n    --red: #ED1C24;\n    --red-deep: #C8121A;\n    --black: #0A0A0A;\n    --ink: #111111;\n    --paper: #F4F1EC;\n    --white: #FFFFFF;\n    --rule: rgba(0,0,0,.18);\n    --rule-on-dark: rgba(255,255,255,.18);\n    --rule-on-red: rgba(255,255,255,.22);\n    --font: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n    --mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n  }\n  *{ box-sizing: border-box; margin: 0; padding: 0; }\n  html, body{ background: var(--red); color: var(--white); font-family: var(--font); -webkit-font-smoothing: antialiased; }\n  body{ overflow-x: hidden; }\n  a{ color: inherit; text-decoration: none; }\n  button{ font: inherit; color: inherit; background: none; border: none; cursor: pointer; }\n  img{ display: block; max-width: 100%; }\n\n  /* ---------- Nav ---------- */\n  .nav{\n    position: fixed; top: 0; left: 0; right: 0; z-index: 50;\n    display: flex; align-items: center; justify-content: space-between;\n    padding: 18px 28px;\n    color: #fff;\n    transition: color .25s ease, background-color .25s ease;\n  }\n  .nav .brand{ display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; font-size: 16px; }\n  .nav .brand .mark{\n    width: 30px; height: 26px;\n    display: grid; place-items: center;\n  }\n  .nav .brand .mark img{ width: 100%; height: 100%; object-fit: contain; filter: invert(1) brightness(2); }\n  .nav.on-light .brand .mark img{ filter: none; }\n  .nav ul{ list-style: none; display: flex; gap: 26px; font-size: 13px; font-weight: 500; }\n  .nav .cta{\n    font-size: 13px; font-weight: 600;\n    border: 1px solid currentColor; padding: 8px 14px; border-radius: 999px;\n  }\n  .nav .gh{\n    width: 26px; height: 26px;\n    display: grid; place-items: center;\n    transition: color .2s, transform .2s;\n  }\n  .nav .gh:hover{ transform: translateY(-1px); }\n  .nav .gh svg{ width: 22px; height: 22px; color: currentColor; display: block; }\n  .nav .right-cluster{ display: flex; align-items: center; gap: 16px; }\n  .nav.on-light{ color: #000; }\n\n  /* ---------- HERO ---------- */\n  .hero{\n    position: relative;\n    min-height: 100vh;\n    background: var(--red);\n    color: #fff;\n    padding: 96px 28px 28px;\n    display: grid;\n    grid-template-rows: 1fr auto;\n  }\n  .hero .meta{\n    position: absolute; top: 18px; right: 28px;\n    font-family: var(--mono); font-size: 11px; letter-spacing: .04em; opacity: .85;\n    text-align: right;\n  }\n  .hero .meta b{ font-weight: 600; }\n  .hero .stack{\n    align-self: end;\n    display: grid;\n    grid-template-columns: 1fr;\n    gap: 0;\n  }\n  .hero h1{\n    font-weight: 900;\n    font-size: clamp(72px, 16.5vw, 280px);\n    line-height: .82;\n    letter-spacing: -0.055em;\n    text-transform: none;\n  }\n  .hero h1 em{\n    font-style: normal;\n    font-weight: 100;\n    letter-spacing: -.04em;\n  }\n  .hero h1 .slash{\n    display: inline-block;\n    transform: translateY(-.05em) skewX(-12deg);\n    margin: 0 .04em;\n    font-weight: 900;\n  }\n  .hero .sub{\n    margin-top: 28px;\n    display: grid;\n    grid-template-columns: 1.6fr 1fr;\n    gap: 40px;\n    align-items: end;\n  }\n  .hero .sub .lede{\n    font-size: clamp(20px, 1.8vw, 26px);\n    line-height: 1.18;\n    font-weight: 500;\n    letter-spacing: -.012em;\n    max-width: 26ch;\n    text-wrap: balance;\n  }\n  .hero .sub .index{\n    font-family: var(--mono); font-size: 11px; line-height: 1.6; opacity: .9;\n    border-top: 1px solid var(--rule-on-red);\n    padding-top: 12px;\n    display: grid; grid-template-columns: 28px 1fr; row-gap: 6px;\n  }\n  .hero .sub .index span:nth-child(odd){ font-weight: 700; }\n  .hero .footline{\n    margin-top: 48px;\n    display: flex; justify-content: space-between; align-items: end;\n    border-top: 1px solid var(--rule-on-red);\n    padding-top: 14px;\n    font-family: var(--mono); font-size: 11px; letter-spacing: .04em;\n  }\n  .hero .footline .scroll{\n    display: flex; align-items: center; gap: 10px;\n  }\n  .hero .footline .scroll .arrow{\n    width: 18px; height: 1px; background: #fff; position: relative;\n  }\n  .hero .footline .scroll .arrow::after{\n    content:\"\"; position: absolute; right: 0; top: -3px; width: 7px; height: 7px;\n    border-right: 1px solid #fff; border-top: 1px solid #fff; transform: rotate(45deg);\n  }\n\n  /* MASSIVE TG behind */\n  .hero .ghost{\n    position: absolute; right: -2vw; top: 8vh;\n    width: clamp(280px, 42vw, 720px);\n    height: auto;\n    pointer-events: none; user-select: none;\n    opacity: .08;\n  }\n  .hero .ghost img{ width: 100%; height: auto; display: block; filter: brightness(0) invert(1); }\n\n  /* ---------- Marquee ---------- */\n  .marquee{\n    background: #fff; color: #000;\n    border-top: 1px solid #000; border-bottom: 1px solid #000;\n    overflow: hidden;\n    padding: 18px 0;\n    font-weight: 700; font-size: clamp(28px, 4.5vw, 64px);\n    letter-spacing: -.03em;\n    white-space: nowrap;\n  }\n  .marquee.on-black{ background: #000; color: #fff; border-color: #fff; }\n  .marquee .track{\n    display: inline-flex; gap: 48px;\n    animation: scroll 38s linear infinite;\n    will-change: transform;\n  }\n  .marquee .track > span{ display: inline-flex; align-items: center; gap: 48px; }\n  .marquee .dot{\n    display: inline-block; width: 14px; height: 14px; border-radius: 999px; background: var(--red);\n    transform: translateY(-4px);\n  }\n  @keyframes scroll{\n    from{ transform: translateX(0); }\n    to{ transform: translateX(-50%); }\n  }\n\n  /* ---------- Manifesto sticky (BLACK) ---------- */\n  .manifesto{\n    background: #000;\n    color: #fff;\n    position: relative;\n  }\n  .manifesto-inner{\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n  }\n  .manifesto .pin{\n    position: sticky; top: 0;\n    height: 100vh;\n    display: flex; flex-direction: column; justify-content: space-between;\n    padding: 96px 40px 40px;\n    border-right: 1px solid var(--rule-on-dark);\n  }\n  .manifesto .pin .label{\n    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;\n    opacity: .7;\n  }\n  .manifesto .pin h2{\n    font-weight: 900; font-size: clamp(56px, 7.6vw, 132px);\n    line-height: .86; letter-spacing: -.045em;\n  }\n  .manifesto .pin h2 .red{ color: var(--red); }\n  .manifesto .pin .sig{\n    font-family: var(--mono); font-size: 11px; opacity: .7;\n    display: flex; justify-content: space-between;\n  }\n  .manifesto .scroll-col{\n    padding: 96px 40px 96px;\n    display: flex; flex-direction: column; gap: 22vh;\n  }\n  .manifesto .stmt{\n    display: grid; gap: 18px;\n  }\n  .manifesto .stmt .num{\n    font-family: var(--mono); font-size: 11px; opacity: .55; letter-spacing: .1em;\n  }\n  .manifesto .stmt p{\n    font-weight: 500;\n    font-size: clamp(28px, 2.6vw, 40px);\n    line-height: 1.12; letter-spacing: -.02em;\n    text-wrap: pretty;\n  }\n  .manifesto .stmt p b{ font-weight: 900; color: var(--red); }\n  .manifesto .stmt p u{ text-decoration: none; border-bottom: 2px solid #fff; padding-bottom: 2px; }\n\n  /* ---------- Capabilities (PAPER) ---------- */\n  .capabilities{\n    background: var(--paper); color: #000;\n    padding: 96px 0 0;\n    position: relative;\n  }\n  .cap-head{\n    display: grid; grid-template-columns: 1fr 1fr; gap: 40px;\n    padding: 0 28px 36px;\n    border-bottom: 1px solid #000;\n  }\n  .cap-head .label{\n    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;\n  }\n  .cap-head h3{\n    font-weight: 900; font-size: clamp(48px, 6vw, 104px); line-height: .9; letter-spacing: -.045em;\n    grid-column: 1 / -1;\n    text-wrap: balance;\n  }\n  .cap-head h3 em{ font-style: normal; color: var(--red); }\n  .cap-head .meta-r{ font-family: var(--mono); font-size: 11px; opacity: .7; text-align: right; align-self: end; }\n\n  .cap-list{ list-style: none; }\n  .cap-row{\n    display: grid;\n    grid-template-columns: 80px 1fr 1.4fr 120px;\n    align-items: center;\n    gap: 24px;\n    padding: 28px;\n    border-bottom: 1px solid #000;\n    cursor: pointer;\n    transition: background .25s ease, color .25s ease;\n    position: relative;\n  }\n  .cap-row:hover{ background: #000; color: #fff; }\n  .cap-row:hover .cap-arrow{ transform: translateX(8px); }\n  .cap-row:hover .cap-num{ color: var(--red); }\n  .cap-num{\n    font-family: var(--mono); font-size: 13px; letter-spacing: .04em; transition: color .2s;\n  }\n  .cap-title{\n    font-weight: 900; font-size: clamp(28px, 3.4vw, 56px); letter-spacing: -.035em; line-height: .95;\n  }\n  .cap-desc{\n    font-size: 15px; line-height: 1.45; max-width: 56ch;\n  }\n  .cap-arrow{\n    justify-self: end;\n    font-size: 24px; transition: transform .25s ease;\n  }\n  .cap-row .reveal{\n    position: absolute; right: 28px; bottom: 28px;\n    font-family: var(--mono); font-size: 11px; opacity: 0; transform: translateY(8px);\n    transition: opacity .2s, transform .2s;\n  }\n\n  /* ---------- VS Comparison (BLACK split RED) ---------- */\n  .compare{\n    position: relative;\n    color: #fff;\n    background: linear-gradient(90deg, #000 0%, #000 50%, var(--red) 50%, var(--red) 100%);\n  }\n  .compare-head{\n    display: grid; grid-template-columns: 1fr 1fr;\n    border-bottom: 1px solid rgba(255,255,255,.25);\n  }\n  .compare-head > div{\n    padding: 56px 40px 28px;\n  }\n  .compare-head > div:first-child{ border-right: 1px solid rgba(255,255,255,.25); }\n  .compare-head .who{\n    font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .8;\n  }\n  .compare-head h4{\n    margin-top: 12px;\n    font-weight: 900; font-size: clamp(40px, 5.6vw, 96px); line-height: .9; letter-spacing: -.04em;\n  }\n  .compare-grid{\n    display: grid; grid-template-columns: 1fr 1fr;\n  }\n  .compare-grid > ul{\n    list-style: none; padding: 12px 0;\n  }\n  .compare-grid > ul:first-child{ border-right: 1px solid rgba(255,255,255,.25); }\n  .compare-grid li{\n    display: grid; grid-template-columns: 56px 1fr;\n    align-items: start; gap: 0;\n    padding: 24px 40px;\n    border-top: 1px solid rgba(255,255,255,.18);\n    font-size: clamp(18px, 1.6vw, 22px);\n    line-height: 1.25; letter-spacing: -.005em;\n    font-weight: 500;\n  }\n  .compare-grid li:first-child{ border-top: none; }\n  .compare-grid .glyph{\n    font-family: var(--mono); font-weight: 700; font-size: 20px;\n  }\n  .compare-grid .col-tg .glyph{ color: var(--red); }\n  .compare-grid .col-them{\n    opacity: .9;\n  }\n  .compare-grid .col-them .glyph{ opacity: .55; }\n  .compare-grid .col-them li{ text-decoration: line-through; text-decoration-color: rgba(255,255,255,.45); text-decoration-thickness: 1px; }\n\n  /* ---------- Numbers strip ---------- */\n  .strip{\n    background: #000; color: #fff;\n    display: grid; grid-template-columns: repeat(4, 1fr);\n    border-top: 1px solid rgba(255,255,255,.2);\n  }\n  .strip .stat{\n    padding: 56px 32px;\n    border-right: 1px solid rgba(255,255,255,.2);\n  }\n  .strip .stat:last-child{ border-right: none; }\n  .strip .num{\n    font-weight: 900; font-size: clamp(56px, 6vw, 96px); letter-spacing: -.05em; line-height: .9;\n  }\n  .strip .num em{ color: var(--red); font-style: normal; }\n  .strip .lab{\n    margin-top: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .7;\n  }\n\n  /* ---------- Process sticky ---------- */\n  .process{\n    background: var(--red); color: #fff; position: relative;\n  }\n  .process-head{\n    padding: 96px 28px 36px; border-bottom: 1px solid var(--rule-on-red);\n    display: grid; grid-template-columns: 1fr auto;\n  }\n  .process-head .label{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }\n  .process-head h3{\n    grid-column: 1 / -1; margin-top: 8px;\n    font-weight: 900; font-size: clamp(48px, 6vw, 104px); line-height: .9; letter-spacing: -.045em;\n    text-wrap: balance;\n  }\n  .process-grid{\n    display: grid; grid-template-columns: repeat(4, 1fr);\n  }\n  .process-grid .step{\n    padding: 48px 28px 56px;\n    border-right: 1px solid var(--rule-on-red);\n    min-height: 360px;\n    display: flex; flex-direction: column; justify-content: space-between;\n  }\n  .process-grid .step:last-child{ border-right: none; }\n  .process-grid .step .n{\n    font-family: var(--mono); font-size: 11px; opacity: .85; letter-spacing: .12em;\n  }\n  .process-grid .step h5{\n    margin-top: auto;\n    font-weight: 900; font-size: clamp(28px, 2.4vw, 36px); letter-spacing: -.03em; line-height: 1;\n  }\n  .process-grid .step p{\n    margin-top: 14px;\n    font-size: 14px; line-height: 1.45; opacity: .92; max-width: 36ch;\n  }\n\n  /* ---------- CTA / Contact ---------- */\n  .cta{\n    background: #000; color: #fff;\n    padding: 12vh 28px;\n    border-top: 1px solid rgba(255,255,255,.2);\n  }\n  .cta-inner{\n    max-width: 1600px; margin: 0 auto;\n    display: grid; gap: 56px;\n  }\n  .cta h2{\n    font-weight: 900; font-size: clamp(72px, 12vw, 220px); line-height: .82; letter-spacing: -.055em;\n    text-wrap: balance;\n  }\n  .cta h2 em{ font-style: normal; color: var(--red); }\n  .cta h2 .arrow{\n    display: inline-block;\n    transform: translateY(-.06em);\n  }\n  .cta-row{\n    display: grid; grid-template-columns: 1fr 1fr 1fr;\n    gap: 40px;\n    border-top: 1px solid rgba(255,255,255,.25);\n    padding-top: 32px;\n  }\n  .cta-row .item .lab{ font-family: var(--mono); font-size: 11px; opacity: .7; letter-spacing: .12em; text-transform: uppercase; }\n  .cta-row .item .val{ margin-top: 10px; font-size: clamp(20px, 1.8vw, 28px); font-weight: 700; letter-spacing: -.015em; }\n  .cta-row .item .val:hover{ color: var(--red); }\n\n  /* ---------- Footer ---------- */\n  footer{\n    background: #000; color: #fff;\n    padding: 32px 28px 32px;\n    border-top: 1px solid rgba(255,255,255,.2);\n    display: grid; grid-template-columns: 1fr auto 1fr;\n    align-items: center; gap: 24px;\n    font-family: var(--mono); font-size: 11px; letter-spacing: .04em;\n  }\n  footer .center{ display: flex; align-items: center; gap: 12px; }\n  footer .mark{\n    width: 26px; height: 22px;\n    display: grid; place-items: center;\n  }\n  footer .mark img{ width: 100%; height: 100%; object-fit: contain; filter: invert(1) brightness(2); }\n  footer .right{ text-align: right; opacity: .7; }\n  footer .left{ opacity: .7; }\n\n  /* ---------- Mobile-ish ---------- */\n  @media (max-width: 900px){\n    .nav ul{ display: none; }\n    .hero .sub{ grid-template-columns: 1fr; }\n    .manifesto-inner{ grid-template-columns: 1fr; }\n    .manifesto .pin{ position: relative; height: auto; padding: 80px 24px 40px; border-right: 0; border-bottom: 1px solid var(--rule-on-dark); }\n    .manifesto .scroll-col{ padding: 60px 24px; gap: 60px; }\n    .cap-row{ grid-template-columns: 50px 1fr 30px; }\n    .cap-desc{ display: none; }\n    .compare{ background: #000; }\n    .compare-head, .compare-grid{ grid-template-columns: 1fr; }\n    .compare-head > div:first-child, .compare-grid > ul:first-child{ border-right: 0; border-bottom: 1px solid rgba(255,255,255,.25); }\n    .compare-grid > ul:last-child{ background: var(--red); }\n    .strip{ grid-template-columns: 1fr 1fr; }\n    .process-grid{ grid-template-columns: 1fr 1fr; }\n    .cta-row{ grid-template-columns: 1fr; }\n    footer{ grid-template-columns: 1fr; text-align: center; }\n    footer .right{ text-align: center; }\n  }\n<\u002Fstyle>\n<\u002Fhead>\n<body>\n\n<!-- ============ NAV ============ -->\n<nav class=\"nav\">\n  <a class=\"brand\" href=\"#top\">\n    <span class=\"mark\"><img src=\"950cddea-6f73-445b-b139-a197347ba9bc\" alt=\"TG\"><\u002Fspan>\n    <span>Agency<\u002Fspan>\n  <\u002Fa>\n  <ul>\n    <li><a href=\"#capabilities\">Capabilities<\u002Fa><\u002Fli>\n    <li><a href=\"#difference\">Difference<\u002Fa><\u002Fli>\n    <li><a href=\"#process\">Process<\u002Fa><\u002Fli>\n    <li><a href=\"#contact\">Contact<\u002Fa><\u002Fli>\n  <\u002Ful>\n  <div class=\"right-cluster\">\n    <a class=\"gh\" href=\"https://github.com/Tguntenaar\" target=\"_blank\" rel=\"noopener\" aria-label=\"GitHub\">\n      <svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 .5C5.73.5.5 5.74.5 12.02c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.04 11.04 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.02 2.8-.02 3.18 0 .31.21.68.8.56 4.57-1.52 7.85-5.83 7.85-10.91C23.5 5.74 18.27.5 12 .5Z\"><\u002Fpath><\u002Fsvg>\n    <\u002Fa>\n    <a class=\"cta\" href=\"#contact\">Book a call →<\u002Fa>\n  <\u002Fdiv>\n<\u002Fnav>\n\n<!-- ============ HERO ============ -->\n<section class=\"hero\" id=\"top\">\n  <div class=\"meta\">\n    <div><b>TG / 001<\u002Fb><\u002Fdiv>\n    <div>Engineering · AI · Security<\u002Fdiv>\n    <div>Est. 2017 — Remote<\u002Fdiv>\n  <\u002Fdiv>\n\n  <div class=\"ghost\" aria-hidden=\"true\"><img src=\"950cddea-6f73-445b-b139-a197347ba9bc\" alt=\"\"><\u002Fdiv>\n\n  <div class=\"stack\">\n    <h1>\n      Ship<span class=\"slash\">/<\u002Fspan>fast.<br>\n      Ship<span class=\"slash\">/<\u002Fspan><em>secure.<\u002Fem>\n    <\u002Fh1>\n\n    <div class=\"sub\">\n      <p class=\"lede\">\n        I'm a 10× engineer building custom AI agents, automation\n        and security infrastructure for teams that refuse to wait\n        on a bloated agency.\n      <\u002Fp>\n      <div class=\"index\">\n        <span>01<\u002Fspan><span>AI Agents &amp; Automation<\u002Fspan>\n        <span>02<\u002Fspan><span>Security Advisory<\u002Fspan>\n        <span>03<\u002Fspan><span>ML / Insight Systems<\u002Fspan>\n        <span>04<\u002Fspan><span>Continuous Engineering<\u002Fspan>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n    <div class=\"footline\">\n      <div>© TG / All rights / 2026<\u002Fdiv>\n      <div class=\"scroll\">Scroll <span class=\"arrow\"><\u002Fspan><\u002Fdiv>\n      <div>N 52.3676° · E 4.9041°<\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- ============ MARQUEE ============ -->\n<div class=\"marquee on-black\" aria-hidden=\"true\">\n  <div class=\"track\">\n    <span>\n      AI AGENTS <span class=\"dot\"><\u002Fspan>\n      AUTOMATION <span class=\"dot\"><\u002Fspan>\n      SECURITY ADVISORY <span class=\"dot\"><\u002Fspan>\n      ML INSIGHTS <span class=\"dot\"><\u002Fspan>\n      INFRA <span class=\"dot\"><\u002Fspan>\n      0-DAY HARDENING <span class=\"dot\"><\u002Fspan>\n      CONTINUOUS DELIVERY <span class=\"dot\"><\u002Fspan>\n    <\u002Fspan>\n    <span>\n      AI AGENTS <span class=\"dot\"><\u002Fspan>\n      AUTOMATION <span class=\"dot\"><\u002Fspan>\n      SECURITY ADVISORY <span class=\"dot\"><\u002Fspan>\n      ML INSIGHTS <span class=\"dot\"><\u002Fspan>\n      INFRA <span class=\"dot\"><\u002Fspan>\n      0-DAY HARDENING <span class=\"dot\"><\u002Fspan>\n      CONTINUOUS DELIVERY <span class=\"dot\"><\u002Fspan>\n    <\u002Fspan>\n  <\u002Fdiv>\n<\u002Fdiv>\n\n<!-- ============ MANIFESTO (sticky) ============ -->\n<section class=\"manifesto\">\n  <div class=\"manifesto-inner\">\n    <aside class=\"pin\">\n      <div class=\"label\">/ 02 — Manifesto<\u002Fdiv>\n      <h2>\n        One operator.<br>\n        Zero <span class=\"red\">bloat.<\u002Fspan>\n      <\u002Fh2>\n      <div class=\"sig\">\n        <span>TG / Manifesto v3<\u002Fspan>\n        <span>2026 ⟶<\u002Fspan>\n      <\u002Fdiv>\n    <\u002Faside>\n\n    <div class=\"scroll-col\">\n      <div class=\"stmt\">\n        <div class=\"num\">— 01<\u002Fdiv>\n        <p>Most agencies sell <u>headcount<\u002Fu>. I sell <b>leverage<\u002Fb>. One senior engineer with AI compounding underneath, shipping the work of a team.<\u002Fp>\n      <\u002Fdiv>\n      <div class=\"stmt\">\n        <div class=\"num\">— 02<\u002Fdiv>\n        <p>I write the agents, the pipelines and the post-mortems. Strategy, build and optimization in <b>one continuous loop<\u002Fb>.<\u002Fp>\n      <\u002Fdiv>\n      <div class=\"stmt\">\n        <div class=\"num\">— 03<\u002Fdiv>\n        <p>Security is not a phase, it's a <b>posture<\u002Fb>. Every system I build is hardened the day it ships, not three audits later.<\u002Fp>\n      <\u002Fdiv>\n      <div class=\"stmt\">\n        <div class=\"num\">— 04<\u002Fdiv>\n        <p>I work alongside your team like an extension — not a vendor handoff, not a quarterly invoice, not a Slack ghost.<\u002Fp>\n      <\u002Fdiv>\n      <div class=\"stmt\">\n        <div class=\"num\">— 05<\u002Fdiv>\n        <p>If it can be automated, it should be. If it can be exploited, it will be. I plan for <b>both<\u002Fb>.<\u002Fp>\n      <\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- ============ MARQUEE 2 ============ -->\n<div class=\"marquee\" aria-hidden=\"true\">\n  <div class=\"track\">\n    <span>\n      CAPABILITIES <span class=\"dot\"><\u002Fspan>\n      WHAT I ACTUALLY DO <span class=\"dot\"><\u002Fspan>\n      NO RETAINERS FOR DECKS <span class=\"dot\"><\u002Fspan>\n      ENGINEERING FIRST <span class=\"dot\"><\u002Fspan>\n    <\u002Fspan>\n    <span>\n      CAPABILITIES <span class=\"dot\"><\u002Fspan>\n      WHAT I ACTUALLY DO <span class=\"dot\"><\u002Fspan>\n      NO RETAINERS FOR DECKS <span class=\"dot\"><\u002Fspan>\n      ENGINEERING FIRST <span class=\"dot\"><\u002Fspan>\n    <\u002Fspan>\n  <\u002Fdiv>\n<\u002Fdiv>\n\n<!-- ============ CAPABILITIES ============ -->\n<section class=\"capabilities\" id=\"capabilities\">\n  <div class=\"cap-head\">\n    <div class=\"label\">/ 03 — Capabilities<\u002Fdiv>\n    <div class=\"meta-r\">06 services · 1 operator<\u002Fdiv>\n    <h3>Tailored systems. <em>Built once,<\u002Fem> evolved forever.<\u002Fh3>\n  <\u002Fdiv>\n\n  <ul class=\"cap-list\">\n    <li class=\"cap-row\">\n      <span class=\"cap-num\">01 / AI<\u002Fspan>\n      <span class=\"cap-title\">Custom AI Agents<\u002Fspan>\n      <span class=\"cap-desc\">Agents wired into your stack — CRM, ticketing, code, comms. Built around your workflow, not a SaaS template. Includes prompt eng, tool routing, eval harnesses.<\u002Fspan>\n      <span class=\"cap-arrow\">→<\u002Fspan>\n    <\u002Fli>\n    <li class=\"cap-row\">\n      <span class=\"cap-num\">02 / OPS<\u002Fspan>\n      <span class=\"cap-title\">Automation &amp; Pipelines<\u002Fspan>\n      <span class=\"cap-desc\">From data ingestion to shipped product. Replace the work that's burning hours on your team — quietly, repeatably, with logs you can actually read.<\u002Fspan>\n      <span class=\"cap-arrow\">→<\u002Fspan>\n    <\u002Fli>\n    <li class=\"cap-row\">\n      <span class=\"cap-num\">03 / SEC<\u002Fspan>\n      <span class=\"cap-title\">Security Advisory<\u002Fspan>\n      <span class=\"cap-desc\">Threat modeling, red-team thinking, secrets &amp; auth review. The voice in the room asking how this gets owned, before someone outside the room owns it.<\u002Fspan>\n      <span class=\"cap-arrow\">→<\u002Fspan>\n    <\u002Fli>\n    <li class=\"cap-row\">\n      <span class=\"cap-num\">04 / ML<\u002Fspan>\n      <span class=\"cap-title\">ML &amp; Insight Systems<\u002Fspan>\n      <span class=\"cap-desc\">Models that earn their seat. Forecasting, classification, retrieval — production-grade, monitored, explainable to non-technical stakeholders.<\u002Fspan>\n      <span class=\"cap-arrow\">→<\u002Fspan>\n    <\u002Fli>\n    <li class=\"cap-row\">\n      <span class=\"cap-num\">05 / SCALE<\u002Fspan>\n      <span class=\"cap-title\">Infra That Grows<\u002Fspan>\n      <span class=\"cap-desc\">Architecture chosen for the next 10× — not the cheapest demo. Cost-aware, observable, boring on purpose where it matters.<\u002Fspan>\n      <span class=\"cap-arrow\">→<\u002Fspan>\n    <\u002Fli>\n    <li class=\"cap-row\">\n      <span class=\"cap-num\">06 / CO<\u002Fspan>\n      <span class=\"cap-title\">Embedded Engineering<\u002Fspan>\n      <span class=\"cap-desc\">I plug into your team like a senior hire. Standups, code review, on-call when needed. Not a deck-and-disappear operation.<\u002Fspan>\n      <span class=\"cap-arrow\">→<\u002Fspan>\n    <\u002Fli>\n  <\u002Ful>\n<\u002Fsection>\n\n<!-- ============ STATS STRIP ============ -->\n<section class=\"strip\">\n  <div class=\"stat\"><div class=\"num\"><em>10×<\u002Fem><\u002Fdiv><div class=\"lab\">/ Output multiplier<\u002Fdiv><\u002Fdiv>\n  <div class=\"stat\"><div class=\"num\">24/7<\u002Fdiv><div class=\"lab\">/ Eyes on the system<\u002Fdiv><\u002Fdiv>\n  <div class=\"stat\"><div class=\"num\">0<\u002Fdiv><div class=\"lab\">/ Account managers<\u002Fdiv><\u002Fdiv>\n  <div class=\"stat\"><div class=\"num\">∞<\u002Fdiv><div class=\"lab\">/ Iteration loops<\u002Fdiv><\u002Fdiv>\n<\u002Fsection>\n\n<!-- ============ COMPARE ============ -->\n<section class=\"compare\" id=\"difference\">\n  <div class=\"compare-head\">\n    <div>\n      <div class=\"who\">/ Other agencies<\u002Fdiv>\n      <h4>What you<br>used to get.<\u002Fh4>\n    <\u002Fdiv>\n    <div>\n      <div class=\"who\">/ TG<\u002Fdiv>\n      <h4>What you<br>get with me.<\u002Fh4>\n    <\u002Fdiv>\n  <\u002Fdiv>\n\n  <div class=\"compare-grid\">\n    <ul class=\"col-them\">\n      <li><span class=\"glyph\">×<\u002Fspan><span>Limited or no real AI expertise — wrappers around someone else's API.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">×<\u002Fspan><span>Only basic marketing or generic dev services on a template stack.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">×<\u002Fspan><span>Manual analysis, slow loops, decks instead of decisions.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">×<\u002Fspan><span>Hard to scale without doubling the bill.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">×<\u002Fspan><span>One-off projects with little follow-up after launch.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">×<\u002Fspan><span>Generic playbooks, no nuance for your domain.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">×<\u002Fspan><span>Transactional, project-based — strangers by month three.<\u002Fspan><\u002Fli>\n    <\u002Ful>\n    <ul class=\"col-tg\">\n      <li><span class=\"glyph\">+<\u002Fspan><span>Tailored, custom AI agents and automation — built around your workflow.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">+<\u002Fspan><span>Strategy, build and optimization, all in one operator.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">+<\u002Fspan><span>Machine-learning insights wired into the decision, not the deck.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">+<\u002Fspan><span>Solutions designed to grow with your business, not against it.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">+<\u002Fspan><span>Continuous improvements, support and on-call when it counts.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">+<\u002Fspan><span>Global tech expertise — hacker, advisor, builder in one seat.<\u002Fspan><\u002Fli>\n      <li><span class=\"glyph\">+<\u002Fspan><span>Works alongside your team like an extension, not a vendor.<\u002Fspan><\u002Fli>\n    <\u002Ful>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- ============ MARQUEE 3 ============ -->\n<div class=\"marquee on-black\" aria-hidden=\"true\">\n  <div class=\"track\">\n    <span>\n      ENGAGEMENT <span class=\"dot\"><\u002Fspan>\n      4 PHASE LOOP <span class=\"dot\"><\u002Fspan>\n      DISCOVER · DESIGN · DEPLOY · DEFEND <span class=\"dot\"><\u002Fspan>\n    <\u002Fspan>\n    <span>\n      ENGAGEMENT <span class=\"dot\"><\u002Fspan>\n      4 PHASE LOOP <span class=\"dot\"><\u002Fspan>\n      DISCOVER · DESIGN · DEPLOY · DEFEND <span class=\"dot\"><\u002Fspan>\n    <\u002Fspan>\n  <\u002Fdiv>\n<\u002Fdiv>\n\n<!-- ============ PROCESS ============ -->\n<section class=\"process\" id=\"process\">\n  <div class=\"process-head\">\n    <div class=\"label\">/ 04 — Engagement<\u002Fdiv>\n    <h3>Four phases. <em style=\"font-style:normal; opacity:.7;\">No retainers&nbsp;for&nbsp;decks.<\u002Fem><\u002Fh3>\n  <\u002Fdiv>\n  <div class=\"process-grid\">\n    <div class=\"step\">\n      <div class=\"n\">— Phase 01<\u002Fdiv>\n      <div>\n        <h5>Discover<\u002Fh5>\n        <p>One week. I map the workflow, the data, the threat surface and what's actually slowing your team down. You leave with a written plan, not a pitch.<\u002Fp>\n      <\u002Fdiv>\n    <\u002Fdiv>\n    <div class=\"step\">\n      <div class=\"n\">— Phase 02<\u002Fdiv>\n      <div>\n        <h5>Design<\u002Fh5>\n        <p>Architecture, models, agents, auth boundaries. Drawn end-to-end before a line of production code ships. Reviewed with your engineers, not over their heads.<\u002Fp>\n      <\u002Fdiv>\n    <\u002Fdiv>\n    <div class=\"step\">\n      <div class=\"n\">— Phase 03<\u002Fdiv>\n      <div>\n        <h5>Deploy<\u002Fh5>\n        <p>Built, tested, instrumented, hardened. Shipped behind feature flags with a rollback plan. The day it goes live is a non-event.<\u002Fp>\n      <\u002Fdiv>\n    <\u002Fdiv>\n    <div class=\"step\">\n      <div class=\"n\">— Phase 04<\u002Fdiv>\n      <div>\n        <h5>Defend<\u002Fh5>\n        <p>Continuous improvements, monitoring and security follow-through. I stay on the system that I built — incentives aligned forever.<\u002Fp>\n      <\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- ============ CTA ============ -->\n<section class=\"cta\" id=\"contact\">\n  <div class=\"cta-inner\">\n    <h2>\n      Got a system<br>\n      that needs<br>\n      <em>shipping?<\u002Fem> <span class=\"arrow\">↗<\u002Fspan>\n    <\u002Fh2>\n    <div class=\"cta-row\">\n      <div class=\"item\">\n        <div class=\"lab\">/ Email<\u002Fdiv>\n        <a class=\"val\" href=\"mailto:hello@thomasguntenaar.com\">hello@thomasguntenaar.com<\u002Fa>\n      <\u002Fdiv>\n      <div class=\"item\">\n        <div class=\"lab\">/ Booking<\u002Fdiv>\n        <a class=\"val\" href=\"https://cal.com/thomas-space\" target=\"_blank\" rel=\"noopener noreferrer\">cal.com/thomas-space<\u002Fa>\n      <\u002Fdiv>\n      <div class=\"item\">\n        <div class=\"lab\">/ Signal<\u002Fdiv>\n        <a class=\"val\" href=\"https://signal.me/#u/thomasin_space.01\" target=\"_blank\" rel=\"noopener noreferrer\">thomasin_space.01<\u002Fa>\n      <\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fsection>\n\n<!-- ============ FOOTER ============ -->\n<footer>\n  <div class=\"left\">© TG Agency — All rights, 2026<\u002Fdiv>\n  <div class=\"center\">\n    <span class=\"mark\"><img src=\"950cddea-6f73-445b-b139-a197347ba9bc\" alt=\"TG\"><\u002Fspan>\n    <span>Engineering · AI · Security<\u002Fspan>\n  <\u002Fdiv>\n  <div class=\"right\">Built solo. Hardened on purpose. — <a href=\"https://github.com/Tguntenaar\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit; border-bottom:1px solid currentColor;\">github.com/Tguntenaar<\u002Fa><\u002Fdiv>\n<\u002Ffooter>\n\n<script>\n  // Hover interaction: cap rows reveal subtitles on enter\n  document.querySelectorAll('.cap-row').forEach((row) => {\n    row.addEventListener('mouseenter', () => row.classList.add('on'));\n    row.addEventListener('mouseleave', () => row.classList.remove('on'));\n  });\n\n  // Nav color switch based on section behind it\n  const nav = document.querySelector('.nav');\n  const lightSections = document.querySelectorAll('.capabilities');\n  function updateNav(){\n    const navY = 30;\n    let onLight = false;\n    lightSections.forEach(s => {\n      const r = s.getBoundingClientRect();\n      if (r.top <= navY && r.bottom >= navY) onLight = true;\n    });\n    nav.classList.toggle('on-light', onLight);\n  }\n  updateNav();\n  window.addEventListener('scroll', updateNav, { passive: true });\n  window.addEventListener('resize', updateNav);\n\n  // Smooth scroll for nav anchors\n  document.querySelectorAll('a[href^=\"#\"]').forEach(a => {\n    a.addEventListener('click', (e) => {\n      const id = a.getAttribute('href');\n      if (id.length > 1) {\n        const el = document.querySelector(id);\n        if (el) {\n          e.preventDefault();\n          window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' });\n        }\n      }\n    });\n  });\n<\u002Fscript>\n\n\n<\u002Fbody><\u002Fhtml>"
+  </script>
 </body>
 </html>
