@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TG — America Is Missing The New Labor Economy</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S6VPJYZ6PZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-S6VPJYZ6PZ');
+</script>
+<link rel="icon" type="image/svg+xml" href="/assets/TG.svg">
+
+<style>
+  :root{
+    --red: #ED1C24;
+    --red-deep: #C8121A;
+    --black: #0A0A0A;
+    --ink: #111111;
+    --paper: #F4F1EC;
+    --white: #FFFFFF;
+    --rule: rgba(0,0,0,.18);
+    --rule-on-dark: rgba(255,255,255,.18);
+    --rule-on-red: rgba(255,255,255,.22);
+    --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+  }
+  *{ box-sizing: border-box; margin: 0; padding: 0; }
+  html, body{ background: var(--red); color: var(--white); font-family: var(--font); -webkit-font-smoothing: antialiased; }
+  body{ overflow-x: hidden; }
+  html{ -webkit-tap-highlight-color: rgba(237, 28, 36, 0.35); scroll-behavior: smooth; }
+  a, a:any-link, a:visited, a:active{ color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--red); outline-offset: 3px; }
+  button{ font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  img{ display: block; max-width: 100%; }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px; color: #fff;
+    transition: color .25s ease, background-color .25s ease;
+  }
+  .nav .brand{ display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; font-size: 16px; }
+  .nav .brand .mark{ width: 30px; height: 26px; display: grid; place-items: center; }
+  .nav .brand .mark img{ width: 100%; height: 100%; object-fit: contain; filter: brightness(0) invert(1); }
+  .nav.on-light .brand .mark img{ filter: none; }
+  .nav ul{ list-style: none; display: flex; gap: 26px; font-size: 13px; font-weight: 500; }
+  .nav .cta{ font-size: 13px; font-weight: 600; border: 1px solid currentColor; padding: 8px 14px; border-radius: 999px; }
+  .nav .right-cluster{ display: flex; align-items: center; gap: 16px; }
+  .nav.on-light{ color: #000; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative; min-height: 100vh; background: var(--red); color: #fff;
+    padding: 96px 28px 28px; display: grid; grid-template-rows: 1fr auto;
+  }
+  .hero .meta{
+    position: absolute; top: 18px; right: 28px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .04em; opacity: .85; text-align: right;
+  }
+  .hero .meta b{ font-weight: 600; }
+  .hero .stack{ align-self: end; display: grid; grid-template-columns: 1fr; gap: 0; }
+  .hero .kicker{
+    font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    opacity: .9; margin-bottom: 26px;
+  }
+  .hero h1{
+    font-weight: 900; font-size: clamp(52px, 11.5vw, 210px);
+    line-height: .84; letter-spacing: -0.055em; text-transform: none;
+  }
+  .hero h1 em{ font-style: normal; font-weight: 100; letter-spacing: -.04em; }
+  .hero h1 .thin{ font-weight: 100; }
+  .hero .sub{
+    margin-top: 32px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 40px; align-items: end;
+  }
+  .hero .sub .lede{
+    font-size: clamp(20px, 1.9vw, 27px); line-height: 1.2; font-weight: 500;
+    letter-spacing: -.012em; max-width: 32ch; text-wrap: balance;
+  }
+  .hero .sub .lede b{ font-weight: 900; }
+  .hero .sub .index{
+    font-family: var(--mono); font-size: 11px; line-height: 1.6; opacity: .9;
+    border-top: 1px solid var(--rule-on-red); padding-top: 12px;
+    display: grid; grid-template-columns: 28px 1fr; row-gap: 6px;
+  }
+  .hero .sub .index span:nth-child(odd){ font-weight: 700; }
+  .hero .footline{
+    margin-top: 48px; display: flex; justify-content: space-between; align-items: end;
+    border-top: 1px solid var(--rule-on-red); padding-top: 14px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .04em;
+  }
+  .hero .footline .scroll{ display: flex; align-items: center; gap: 10px; }
+  .hero .footline .scroll .arrow{ width: 18px; height: 1px; background: #fff; position: relative; }
+  .hero .footline .scroll .arrow::after{
+    content:""; position: absolute; right: 0; top: -3px; width: 7px; height: 7px;
+    border-right: 1px solid #fff; border-top: 1px solid #fff; transform: rotate(45deg);
+  }
+  .hero .ghost{
+    position: absolute; right: -2vw; top: 8vh; width: clamp(280px, 42vw, 720px);
+    height: auto; pointer-events: none; user-select: none; opacity: .08;
+  }
+  .hero .ghost img{ width: 100%; height: auto; display: block; filter: brightness(0) invert(1); }
+
+  /* ---------- Marquee ---------- */
+  .marquee{
+    background: #fff; color: #000; border-top: 1px solid #000; border-bottom: 1px solid #000;
+    overflow: hidden; padding: 18px 0;
+    font-weight: 700; font-size: clamp(28px, 4.5vw, 64px); letter-spacing: -.03em; white-space: nowrap;
+  }
+  .marquee.on-black{ background: #000; color: #fff; border-color: #fff; }
+  .marquee .track{ display: inline-flex; gap: 48px; animation: scroll 44s linear infinite; will-change: transform; }
+  .marquee .track > span{ display: inline-flex; align-items: center; gap: 48px; }
+  .marquee .dot{ display: inline-block; width: 14px; height: 14px; border-radius: 999px; background: var(--red); transform: translateY(-4px); }
+  @keyframes scroll{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+
+  /* ---------- Thesis (BLACK, sticky) ---------- */
+  .thesis{ background: #000; color: #fff; position: relative; }
+  .thesis-inner{ display: grid; grid-template-columns: 1fr 1fr; }
+  .thesis .pin{
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 96px 40px 40px; border-right: 1px solid var(--rule-on-dark);
+  }
+  .thesis .pin .label{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .7; }
+  .thesis .pin h2{ font-weight: 900; font-size: clamp(48px, 6.6vw, 116px); line-height: .86; letter-spacing: -.045em; }
+  .thesis .pin h2 .red{ color: var(--red); }
+  .thesis .pin .sig{ font-family: var(--mono); font-size: 11px; opacity: .7; display: flex; justify-content: space-between; }
+  .thesis .scroll-col{ padding: 96px 40px 96px; display: flex; flex-direction: column; gap: 22vh; }
+  .thesis .stmt{ display: grid; gap: 18px; }
+  .thesis .stmt .num{ font-family: var(--mono); font-size: 11px; opacity: .55; letter-spacing: .1em; }
+  .thesis .stmt p{ font-weight: 500; font-size: clamp(26px, 2.5vw, 38px); line-height: 1.14; letter-spacing: -.02em; text-wrap: pretty; }
+  .thesis .stmt p b{ font-weight: 900; color: var(--red); }
+  .thesis .stmt p u{ text-decoration: none; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+
+  /* ---------- Master plan (PAPER) ---------- */
+  .plan{ background: var(--paper); color: #000; padding: 96px 0 0; position: relative; }
+  .plan-head{
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+    padding: 0 28px 36px; border-bottom: 1px solid #000;
+  }
+  .plan-head .label{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  .plan-head h3{
+    font-weight: 900; font-size: clamp(40px, 5.6vw, 100px); line-height: .9; letter-spacing: -.045em;
+    grid-column: 1 / -1; text-wrap: balance;
+  }
+  .plan-head h3 em{ font-style: normal; color: var(--red); }
+  .plan-head .meta-r{ font-family: var(--mono); font-size: 11px; opacity: .7; text-align: right; align-self: end; }
+  .plan-grid{ display: grid; grid-template-columns: repeat(3, 1fr); }
+  .plan-step{
+    padding: 48px 28px 56px; border-right: 1px solid #000; min-height: 440px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .plan-step:last-child{ border-right: none; }
+  .plan-step .n{ font-family: var(--mono); font-size: 11px; opacity: .6; letter-spacing: .12em; }
+  .plan-step .big{ font-weight: 900; font-size: clamp(56px, 7vw, 120px); line-height: .8; letter-spacing: -.06em; color: var(--red); }
+  .plan-step h5{ margin-top: 26px; font-weight: 900; font-size: clamp(24px, 2.4vw, 34px); letter-spacing: -.03em; line-height: 1; }
+  .plan-step p{ margin-top: 14px; font-size: 15px; line-height: 1.5; max-width: 42ch; }
+
+  /* ---------- Stats strip ---------- */
+  .strip{
+    background: #000; color: #fff;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid rgba(255,255,255,.2);
+  }
+  .strip .stat{ padding: 56px 32px; border-right: 1px solid rgba(255,255,255,.2); }
+  .strip .stat:last-child{ border-right: none; }
+  .strip .num{ font-weight: 900; font-size: clamp(44px, 5vw, 80px); letter-spacing: -.05em; line-height: .9; }
+  .strip .num em{ color: var(--red); font-style: normal; }
+  .strip .lab{ margin-top: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .7; line-height: 1.5; }
+
+  /* ---------- Compare (BLACK split RED) ---------- */
+  .trap{ position: relative; color: #fff; background: linear-gradient(90deg, #000 0%, #000 50%, var(--red) 50%, var(--red) 100%); }
+  .trap-head{ display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid rgba(255,255,255,.25); }
+  .trap-head > div{ padding: 56px 40px 28px; }
+  .trap-head > div:first-child{ border-right: 1px solid rgba(255,255,255,.25); }
+  .trap-head .who{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+  .trap-head h4{ margin-top: 12px; font-weight: 900; font-size: clamp(34px, 5vw, 88px); line-height: .9; letter-spacing: -.04em; }
+  .trap-grid{ display: grid; grid-template-columns: 1fr 1fr; }
+  .trap-grid > ul{ list-style: none; padding: 12px 0; }
+  .trap-grid > ul:first-child{ border-right: 1px solid rgba(255,255,255,.25); }
+  .trap-grid li{
+    display: grid; grid-template-columns: 56px 1fr; align-items: start; gap: 0;
+    padding: 24px 40px; border-top: 1px solid rgba(255,255,255,.18);
+    font-size: clamp(18px, 1.6vw, 22px); line-height: 1.25; letter-spacing: -.005em; font-weight: 500;
+  }
+  .trap-grid li:first-child{ border-top: none; }
+  .trap-grid .glyph{ font-family: var(--mono); font-weight: 700; font-size: 20px; }
+  .trap-grid .col-good .glyph{ color: var(--red); }
+  .trap-grid .col-bad{ opacity: .9; }
+  .trap-grid .col-bad .glyph{ opacity: .55; }
+  .trap-grid .col-bad li{ text-decoration: line-through; text-decoration-color: rgba(255,255,255,.45); text-decoration-thickness: 1px; }
+
+  /* ---------- Process / phases ---------- */
+  .process{ background: var(--red); color: #fff; position: relative; }
+  .process-head{
+    padding: 96px 28px 36px; border-bottom: 1px solid var(--rule-on-red);
+    display: grid; grid-template-columns: 1fr auto;
+  }
+  .process-head .label{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  .process-head h3{
+    grid-column: 1 / -1; margin-top: 8px;
+    font-weight: 900; font-size: clamp(44px, 6vw, 100px); line-height: .9; letter-spacing: -.045em; text-wrap: balance;
+  }
+  .process-head h3 em{ font-style: normal; opacity: .7; }
+  .process-grid{ display: grid; grid-template-columns: repeat(4, 1fr); }
+  .process-grid .step{
+    padding: 48px 28px 56px; border-right: 1px solid var(--rule-on-red);
+    min-height: 360px; display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .process-grid .step:last-child{ border-right: none; }
+  .process-grid .step .n{ font-family: var(--mono); font-size: 11px; opacity: .85; letter-spacing: .12em; }
+  .process-grid .step h5{ margin-top: auto; font-weight: 900; font-size: clamp(26px, 2.4vw, 36px); letter-spacing: -.03em; line-height: 1; }
+  .process-grid .step p{ margin-top: 14px; font-size: 14px; line-height: 1.45; opacity: .92; max-width: 36ch; }
+
+  /* ---------- Pull quote (BLACK) ---------- */
+  .pull{ background: #000; color: #fff; padding: 16vh 28px; border-top: 1px solid rgba(255,255,255,.2); }
+  .pull-inner{ max-width: 1500px; margin: 0 auto; }
+  .pull .label{ font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .7; margin-bottom: 40px; }
+  .pull p{ font-weight: 900; font-size: clamp(32px, 4.4vw, 78px); line-height: .99; letter-spacing: -.04em; text-wrap: balance; }
+  .pull p .thin{ font-weight: 100; }
+  .pull p em{ font-style: normal; color: var(--red); }
+  .pull .attr{ margin-top: 48px; font-family: var(--mono); font-size: 12px; letter-spacing: .06em; opacity: .7; }
+
+  /* ---------- CTA ---------- */
+  .cta{ background: var(--red); color: #fff; padding: 12vh 28px; border-top: 1px solid var(--rule-on-red); }
+  .cta-inner{ max-width: 1600px; margin: 0 auto; display: grid; gap: 56px; }
+  .cta h2{ font-weight: 900; font-size: clamp(56px, 10vw, 190px); line-height: .82; letter-spacing: -.055em; text-wrap: balance; }
+  .cta h2 em{ font-style: normal; font-weight: 100; }
+  .cta h2 .arrow{ display: inline-block; transform: translateY(-.06em); }
+  .cta-row{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; border-top: 1px solid var(--rule-on-red); padding-top: 32px; }
+  .cta-row .item .lab{ font-family: var(--mono); font-size: 11px; opacity: .8; letter-spacing: .12em; text-transform: uppercase; }
+  .cta-row .item .val{ margin-top: 10px; font-size: clamp(20px, 1.8vw, 28px); font-weight: 700; letter-spacing: -.015em; }
+  .cta-row .item .val:hover{ opacity: .7; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background: #000; color: #fff; padding: 32px 28px; border-top: 1px solid rgba(255,255,255,.2);
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .04em;
+  }
+  footer .center{ display: flex; align-items: center; gap: 12px; }
+  footer .mark{ width: 26px; height: 22px; display: grid; place-items: center; }
+  footer .mark img{ width: 100%; height: 100%; object-fit: contain; filter: brightness(0) invert(1); }
+  footer .right{ text-align: right; opacity: .7; }
+  footer .left{ opacity: .7; }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal-up{ opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal-up.in{ opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce){ .reveal-up{ opacity: 1; transform: none; transition: none; } .marquee .track{ animation: none; } }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 900px){
+    .nav ul{ display: none; }
+    .hero .sub{ grid-template-columns: 1fr; }
+    .thesis-inner{ grid-template-columns: 1fr; }
+    .thesis .pin{ position: relative; height: auto; padding: 80px 24px 40px; border-right: 0; border-bottom: 1px solid var(--rule-on-dark); }
+    .thesis .scroll-col{ padding: 60px 24px; gap: 60px; }
+    .plan-grid{ grid-template-columns: 1fr; }
+    .plan-step{ border-right: 0; border-bottom: 1px solid #000; min-height: 0; }
+    .plan-step:last-child{ border-bottom: none; }
+    .trap{ background: #000; }
+    .trap-head, .trap-grid{ grid-template-columns: 1fr; }
+    .trap-head > div:first-child, .trap-grid > ul:first-child{ border-right: 0; border-bottom: 1px solid rgba(255,255,255,.25); }
+    .trap-grid > ul:last-child{ background: var(--red); }
+    .strip{ grid-template-columns: 1fr 1fr; }
+    .process-grid{ grid-template-columns: 1fr 1fr; }
+    .cta-row{ grid-template-columns: 1fr; }
+    footer{ grid-template-columns: 1fr; text-align: center; }
+    footer .right{ text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <a class="brand" href="#top">
+    <span class="mark"><img src="/assets/TG.svg" alt="TG"></span>
+    <span>Agency</span>
+  </a>
+  <ul>
+    <li><a href="#thesis">Thesis</a></li>
+    <li><a href="#playbook">The Playbook</a></li>
+    <li><a href="#divide">The Divide</a></li>
+    <li><a href="#contact">Act</a></li>
+  </ul>
+  <div class="right-cluster">
+    <a class="gh" href="https://github.com/Tguntenaar" target="_blank" rel="noopener" aria-label="GitHub" style="width:26px;height:26px;display:grid;place-items:center;">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:22px;height:22px;"><path d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.04 11.04 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.06.78 2.14 0 1.55-.02 2.8-.02 3.18 0 .31.21.68.8.56 4.57-1.52 7.85-5.83 7.85-10.91C23.5 5.74 18.27.5 12 .5Z"></path></svg>
+    </a>
+    <a class="cta" href="#contact">Call for action →</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="meta">
+    <div><b>TG / AB — Robotics</b></div>
+    <div>Manufacturing · Automation · Labor</div>
+    <div>A Call for Action — West</div>
+  </div>
+
+  <div class="ghost" aria-hidden="true"><img src="/assets/TG.svg" alt=""></div>
+
+  <div class="stack">
+    <div class="kicker">Robots that build robots. The new labor economy.</div>
+    <h1>
+      America<br>
+      is missing<br>
+      <em>the shift.</em>
+    </h1>
+
+    <div class="sub">
+      <p class="lede">
+        Intelligent robotics is the first industrial input that isn't
+        supplemental — it's <b>fully additive.</b> 24/7 labor at higher
+        throughput than any human. The one country positioned to capture
+        it at full scale is China. If the West doesn't follow, the
+        production expansion is granted to China alone.
+      </p>
+      <div class="index">
+        <span>01</span><span>General-purpose robotics — the holy grail</span>
+        <span>02</span><span>Scale → oversupply → flywheel</span>
+        <span>03</span><span>The West is positioned backward</span>
+        <span>04</span><span>A closing window</span>
+      </div>
+    </div>
+
+    <div class="footline">
+      <div>© TG / After SemiAnalysis / 2026</div>
+      <div class="scroll">Scroll <span class="arrow"></span></div>
+      <div>Robotics — Part 1</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee on-black" aria-hidden="true">
+  <div class="track">
+    <span>
+      A CALL FOR ACTION <span class="dot"></span>
+      ROBOTS BUILDING ROBOTS <span class="dot"></span>
+      24/7 ADDITIVE LABOR <span class="dot"></span>
+      THE HOLY GRAIL IS GENERAL PURPOSE <span class="dot"></span>
+    </span>
+    <span>
+      A CALL FOR ACTION <span class="dot"></span>
+      ROBOTS BUILDING ROBOTS <span class="dot"></span>
+      24/7 ADDITIVE LABOR <span class="dot"></span>
+      THE HOLY GRAIL IS GENERAL PURPOSE <span class="dot"></span>
+    </span>
+  </div>
+</div>
+
+<!-- ============ THESIS (sticky) ============ -->
+<section class="thesis" id="thesis">
+  <div class="thesis-inner">
+    <aside class="pin">
+      <div class="label">/ 01 — The Thesis</div>
+      <h2>
+        The bedrock<br>the West<br>stands on is<br>
+        <span class="red">shaky.</span>
+      </h2>
+      <div class="sig">
+        <span>TG / Robotics Part 1</span>
+        <span>2026 ⟶</span>
+      </div>
+    </aside>
+
+    <div class="scroll-col">
+      <div class="stmt reveal-up">
+        <div class="num">— 01</div>
+        <p>We're at the early precipice of a <b>nonlinear transformation</b> in industrial society. Automation is undergoing a revolution that enables full-scale automation of all manufacturing.</p>
+      </div>
+      <div class="stmt reveal-up">
+        <div class="num">— 02</div>
+        <p>These systems are the first industrial input that is not supplemental but <u>fully additive</u> — <b>24/7 labor</b> with higher throughput than any human. Not one more unit of work. A new axis of it.</p>
+      </div>
+      <div class="stmt reveal-up">
+        <div class="num">— 03</div>
+        <p>In robotics, the impact compounds. Robotics systems <b>manufacturing more robotics systems</b> — each unit drives cost down and quality up, strengthening the flywheel. Ad infinitum.</p>
+      </div>
+      <div class="stmt reveal-up">
+        <div class="num">— 04</div>
+        <p>Robotics is a <b>general-purpose technology.</b> Its gains spill horizontally across every sector — textiles, electronics, consumer goods, automotive — not one industry, all of them.</p>
+      </div>
+      <div class="stmt reveal-up">
+        <div class="num">— 05</div>
+        <p>Should China unlock this first, it will iterate faster, subsidize deeper, and oversupply every market. The general-purpose robotics boom becomes <b>an existential threat</b> to a West that is outcompeted in all capacities.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE 2 ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>
+      THE DOMINANCE PLAYBOOK <span class="dot"></span>
+      START AT SCALE <span class="dot"></span>
+      OVERSUPPLY THE MARKET <span class="dot"></span>
+      SPIN THE FLYWHEEL <span class="dot"></span>
+    </span>
+    <span>
+      THE DOMINANCE PLAYBOOK <span class="dot"></span>
+      START AT SCALE <span class="dot"></span>
+      OVERSUPPLY THE MARKET <span class="dot"></span>
+      SPIN THE FLYWHEEL <span class="dot"></span>
+    </span>
+  </div>
+</div>
+
+<!-- ============ PLAYBOOK ============ -->
+<section class="plan" id="playbook">
+  <div class="plan-head">
+    <div class="label">/ 02 — China's Playbook</div>
+    <div class="meta-r">Batteries → solar → EVs → robots</div>
+    <h3>The same three moves, <em>run again.</em></h3>
+  </div>
+
+  <div class="plan-grid">
+    <div class="plan-step reveal-up">
+      <div class="n">— Move 01</div>
+      <div class="big">SCALE</div>
+      <div>
+        <h5>Iterate fastest</h5>
+        <p>In Shenzhen, DJI could source any part from any factory within hours and iterate at an unreal speed. GoPro's Karma shipped from three countries and took weeks per loop. By 2016 DJI had already won — 80% of the global commercial drone market.</p>
+      </div>
+    </div>
+    <div class="plan-step reveal-up">
+      <div class="n">— Move 02</div>
+      <div class="big">FLOOD</div>
+      <div>
+        <h5>Oversupply the market</h5>
+        <p>Before a Chinese competitor ever enters the West, it has already won on cost. Then production capacity floods in, prices are cut aggressively, and every incumbent is undercut into "margin challenges." It's a competition of scale — decided before it starts.</p>
+      </div>
+    </div>
+    <div class="plan-step reveal-up">
+      <div class="n">— Move 03</div>
+      <div class="big">∞</div>
+      <div>
+        <h5>Spin the flywheel</h5>
+        <p>Robots build robots. KUKA's Guangdong plant already builds one robot every half hour, aiming for one a minute. Each unit lowers cost and raises quality, which sells more units. The loop repeats ad infinitum — and the door closes behind it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS STRIP ============ -->
+<section class="strip">
+  <div class="stat reveal-up"><div class="num"><em>51%</em></div><div class="lab">/ Of global robot installs<br>came from China, 2023</div></div>
+  <div class="stat reveal-up"><div class="num">2.2×</div><div class="lab">/ Cost to build the same<br>robot arm in the US</div></div>
+  <div class="stat reveal-up"><div class="num"><em>90%</em></div><div class="lab">/ China's share of rare-earth<br>permanent magnets</div></div>
+  <div class="stat reveal-up"><div class="num">$16K</div><div class="lab">/ Unitree G1 — the only<br>humanoid you can buy</div></div>
+</section>
+
+<!-- ============ MARQUEE 3 ============ -->
+<div class="marquee on-black" aria-hidden="true">
+  <div class="track">
+    <span>
+      THE DIVIDE <span class="dot"></span>
+      CHINA IS LIVING IN ANOTHER WORLD <span class="dot"></span>
+      THE WEST IS COVERING ITS EYES <span class="dot"></span>
+      LIGHTS-OUT FACTORIES <span class="dot"></span>
+    </span>
+    <span>
+      THE DIVIDE <span class="dot"></span>
+      CHINA IS LIVING IN ANOTHER WORLD <span class="dot"></span>
+      THE WEST IS COVERING ITS EYES <span class="dot"></span>
+      LIGHTS-OUT FACTORIES <span class="dot"></span>
+    </span>
+  </div>
+</div>
+
+<!-- ============ THE DIVIDE ============ -->
+<section class="trap" id="divide">
+  <div class="trap-head">
+    <div>
+      <div class="who">/ The West</div>
+      <h4>Caught<br>flatfooted.</h4>
+    </div>
+    <div>
+      <div class="who">/ China</div>
+      <h4>Already living in<br>another world.</h4>
+    </div>
+  </div>
+
+  <div class="trap-grid">
+    <ul class="col-bad">
+      <li><span class="glyph">×</span><span>US ranks 10th in robot density — ~49% below wage-adjusted expectation.</span></li>
+      <li><span class="glyph">×</span><span>Multi-year national strategy repealed with each administration; CHIPS &amp; IRA on the table.</span></li>
+      <li><span class="glyph">×</span><span>"Made in USA" labels riding on Chinese base components with no scalable alternative.</span></li>
+      <li><span class="glyph">×</span><span>Germany's KUKA sold off to China's Midea in 2016 — its goliath, gone.</span></li>
+      <li><span class="glyph">×</span><span>Korea &amp; Japan can't automate their way past a birth-rate crisis.</span></li>
+      <li><span class="glyph">×</span><span>COVID was the wake-up call. The country refused to open its eyes.</span></li>
+    </ul>
+    <ul class="col-good">
+      <li><span class="glyph">+</span><span>Xiaomi's lights-out factory: one smartphone per second, zero humans employed.</span></li>
+      <li><span class="glyph">+</span><span>Local firms near 50% of the world's largest robot market, up from 30% in 2020.</span></li>
+      <li><span class="glyph">+</span><span>Robot density from outside the top 10 to 3rd worldwide — 470 per 10,000 by 2024.</span></li>
+      <li><span class="glyph">+</span><span>Unitree G1 fully decoupled from American components, shipping at $16K.</span></li>
+      <li><span class="glyph">+</span><span>Humanoid firms raised $769M in 2023, $990M in H1 2024 — state-backed.</span></li>
+      <li><span class="glyph">+</span><span>Made in China 2025 &amp; Belt and Road built the whole minerals-to-magnets stack.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ MARQUEE 4 ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>
+      THE ROAD TO GENERAL PURPOSE <span class="dot"></span>
+      STRUCTURED → PARTIALLY UNSTRUCTURED → HUMAN-POPULATED <span class="dot"></span>
+    </span>
+    <span>
+      THE ROAD TO GENERAL PURPOSE <span class="dot"></span>
+      STRUCTURED → PARTIALLY UNSTRUCTURED → HUMAN-POPULATED <span class="dot"></span>
+    </span>
+  </div>
+</div>
+
+<!-- ============ PROCESS / ROAD ============ -->
+<section class="process">
+  <div class="process-head">
+    <div class="label">/ 03 — The Holy Grail</div>
+    <h3>A robot that does <em>any task, any environment.</em></h3>
+  </div>
+  <div class="process-grid">
+    <div class="step reveal-up">
+      <div class="n">— Stage 01</div>
+      <div>
+        <h5>Structured</h5>
+        <p>Today's robots: rigid, fragile, predefined. One task, static environment. Any deviation breaks the process — the constraint that stifled the industry for generations.</p>
+      </div>
+    </div>
+    <div class="step reveal-up">
+      <div class="n">— Stage 02</div>
+      <div>
+        <h5>Partially unstructured</h5>
+        <p>The first movement out of the cell. Robots handle more than one task inside the factory, sliding across the spectrum until they can automate every step.</p>
+      </div>
+    </div>
+    <div class="step reveal-up">
+      <div class="n">— Stage 03</div>
+      <div>
+        <h5>Human-populated</h5>
+        <p>The hardest domain: dynamic, unpredictable, shared with people. Foundation models, simulated data and cheap electric actuators have finally cracked the door.</p>
+      </div>
+    </div>
+    <div class="step reveal-up">
+      <div class="n">— Stage 04</div>
+      <div>
+        <h5>General purpose</h5>
+        <p>Any task, any environment — the factory becomes one living organism. Whoever crosses first captures nearly all labor demand, in perpetuity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PULL QUOTE ============ -->
+<section class="pull">
+  <div class="pull-inner">
+    <div class="label reveal-up">/ 04 — What's at Stake</div>
+    <p class="reveal-up">
+      With each dilapidated factory and every <span class="thin">"Made in China"</span>
+      sticker, the dots connect a pointillist image of a nation depleted.
+      The country stands at the fork between <em>limitless labor expansion</em>
+      and <em>obsolescence.</em>
+    </p>
+    <div class="attr reveal-up">— SemiAnalysis, "America Is Missing The New Labor Economy," Robotics Part 1</div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="contact">
+  <div class="cta-inner">
+    <h2>
+      Take part<br>
+      before it's<br>
+      <em>owned.</em> <span class="arrow">↗</span>
+    </h2>
+    <div class="cta-row">
+      <div class="item">
+        <div class="lab">/ Email</div>
+        <a class="val" href="mailto:hello@thomasguntenaar.com">hello@thomasguntenaar.com</a>
+      </div>
+      <div class="item">
+        <div class="lab">/ Booking</div>
+        <a class="val" href="https://cal.com/thomas-space" target="_blank" rel="noopener noreferrer">cal.com/thomas-space</a>
+      </div>
+      <div class="item">
+        <div class="lab">/ Signal</div>
+        <a class="val" href="https://signal.me/#u/thomasin_space.01" target="_blank" rel="noopener noreferrer">thomasin_space.01</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="left">© TG Agency — All rights, 2026</div>
+  <div class="center">
+    <span class="mark"><img src="/assets/TG.svg" alt="TG"></span>
+    <span>Engineering · AI · Security</span>
+  </div>
+  <div class="right">Reframed from SemiAnalysis, Robotics Part 1 — <a href="https://github.com/Tguntenaar" target="_blank" rel="noopener" style="color:inherit; border-bottom:1px solid currentColor;">github.com/Tguntenaar</a></div>
+</footer>
+
+<script>
+  // Nav color switch over the light (paper) section
+  const nav = document.querySelector('.nav');
+  const lightSections = document.querySelectorAll('.plan');
+  function updateNav(){
+    const navY = 30; let onLight = false;
+    lightSections.forEach(s => {
+      const r = s.getBoundingClientRect();
+      if (r.top <= navY && r.bottom >= navY) onLight = true;
+    });
+    nav.classList.toggle('on-light', onLight);
+  }
+  updateNav();
+  window.addEventListener('scroll', updateNav, { passive: true });
+  window.addEventListener('resize', updateNav);
+
+  // Reveal-on-scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal-up').forEach(el => io.observe(el));
+</script>
+
+</body></html>
